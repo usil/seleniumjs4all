@@ -1,0 +1,3 @@
+{
+  "arguments": ["--log-level=1", "--headless", "--no-sandbox", "--disable-gpu"]
+}

@@ -1,0 +1,7 @@
+node_modules
+screenshots
+tmp
+report
+jest-output.json
+*-jest-output.json
+.env
