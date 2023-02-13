@@ -14,11 +14,11 @@ const finder = require('find-package-json');
 const { formatVarsEnv, sortTestResults, createReportHTML } = require("./helpers/testHelpers");
 const path = require("path");
 const exec = util.promisify(require("child_process").exec);
+const packPath = require("package-json-path");
 const envSettings = new EnvSettings();
 const compresser = new Compresser()
 const mailer = new Mailer();
 
-const packPath = require("package-json-path");
 
 console.log(path.dirname(packPath((""))));
 
@@ -222,7 +222,7 @@ const main = () => {
         varToEnv.TEST_UUID = v4();
         varToEnv.EXECUTION_SUITE = index;
 
-        let resolveSourcePath = path.resolve( __dirname, '..', 'report/', varToEnv.TEST_UUID );
+        let resolveSourcePath = path.join( rootPath, 'report/', varToEnv.TEST_UUID );
         const params = {
           filename: varToEnv.TEST_UUID,
           sourcePath: resolveSourcePath + '.zip',

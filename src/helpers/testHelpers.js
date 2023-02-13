@@ -319,13 +319,13 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
 
   const jestOutput = require( path.join(rootPath,`${suiteIdentifier}-jest-output.json`));
   let testResults = sortTestResults(jestOutput.testResults);
-
+  
   const dataToReport = [];
 
   /**
    * Preparar los datos para el reporte web
-   */
-  for (const testResult of testResults) {
+  */
+ for (const testResult of testResults) {
     const path = testResult.name.split(SPLIT_PATH)
 
     const testIndex = path.indexOf("tests");
@@ -386,6 +386,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
       let error_log = [];
 
       for (const assertionResult of testResult.assertionResults) {
+
         const {
           ancestorTitles,
           failureMessages,
@@ -431,13 +432,14 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
   report_data_json.failed = jestOutput.numFailedTests;
   report_data_json.total = jestOutput.numTotalTests;
   report_data_json.date = new Date(jestOutput.startTime).toString()
+
   try {
     const index =
       fs.readFileSync(
         path.resolve(__dirname, "ReportTemplate/index.html"),
         { encoding: 'utf8' }
       );
-
+    
     let result = index.replace(/#data_report/g, JSON.stringify(report_data_json));
     result = result.replace(/#columns_name/g, JSON.stringify(columnNames));
     result = result.replace(/#report_duration/g, report_data_json.duration);
@@ -449,14 +451,8 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
         { recursive: true }
       );
     }
-
-    /* fs.writeFileSync(
-      `.${SPLIT_PATH}report${SPLIT_PATH}${testUuid}${SPLIT_PATH}${virtualUser}${SPLIT_PATH}index.html`,
-      result,
-      'utf-8'
-    ); */
     fs.writeFileSync(
-      path.resolve(__dirname, "ReportTemplate/index.html"),
+      `.${SPLIT_PATH}report${SPLIT_PATH}${testUuid}${SPLIT_PATH}${virtualUser}${SPLIT_PATH}index.html`,
       result,
       'utf-8'
     );
