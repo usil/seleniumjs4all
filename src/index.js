@@ -102,7 +102,7 @@ const main = () => {
             .then( () => {
               if (process.env.SEND_REPORT === 'send') {
                 compresser.run(resolveSourcePath, resolveSourcePath);
-                mailer.sendMail(params);
+                mailer.sendMail(params, varToEnv.TEST_UUID, "Success");
               }
               });
             }
@@ -118,7 +118,7 @@ const main = () => {
                 .then(() => {
                   if (process.env.SEND_REPORT === 'send') {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    mailer.sendMail(params);
+                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed");
                   }
                 });
 

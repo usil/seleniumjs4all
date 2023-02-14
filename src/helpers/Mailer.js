@@ -31,13 +31,27 @@ function MailService() {
 
     this.transporter = nodemailer.createTransport(smtpSettings);
   };
-
-  this.sendMail = async (params) => {
+  /**
+   *
+   * @param {Object} params Params to send Mail
+   * @param {string} params.filename filename is a name that report will send
+   * @param {string} params.sourcePath sourcePath is a path of file to find and then send
+   * @param {string} params.contentType contentType type of content to send
+   * @param {string | number} uuid uuid is unique identifier
+   * @param {string} status status <failed | passed>
+   * 
+   * 
+   * 
+   * 
+   * @description Send Mail with the generated report
+   * @returns {void}
+   */
+  this.sendMail = async (params, uuid, status) => {
     this.initialize();
     const mailOptions = {
       from: process.env.SMTP_FROM_ALIAS ?? process.env.SMTP_USER,
       to:  process.env.SMTP_TO,
-      subject:  process.env.SMTP_SUBJECT ?? 'Selenium Reporter',
+      subject:  (process.env.SMTP_SUBJECT ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
       attachments: [
         {
             filename: params?.filename + '.gzip',
