@@ -1,5 +1,10 @@
 # seleniumjs4all
 
+<img src="./badges/badge-branches.svg">
+<img src="./badges/badge-functions.svg">
+<img src="./badges/badge-lines.svg">
+<img src="./badges/badge-statements.svg">
+
 ## Description
 
 This is a library to contains diferents functions.
