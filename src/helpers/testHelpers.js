@@ -463,6 +463,14 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
   }
 };
 
+function fileExists(path) {
+  try {
+    return fs.statSync(path).isFile();
+  } catch (e) {
+    return false;
+  }
+}
+
 /**
  *
  * @param {string | number} suiteIdentifier Test Suite Identifier
@@ -473,26 +481,34 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
  * @param {string} reportMode Type of report mode ( dynamicDeep | normal )
  * 
  * @description Print the report table
- * @returns Table
+ * @returns Table || string
  */
 const createTable = async (suiteIdentifier, virtualUser, testUuid, rootPath, columnNames, reportMode) => {
-  const jestOutput = require(path.join(rootPath, `${suiteIdentifier}-jest-output.json`));
+  if (!suiteIdentifier) {
+    return 'The suiteIdentifier must be a real value, diferent undefined, null, etc.';
+  }
+  const pathJsonFile = path.join(rootPath, `${suiteIdentifier}-jest-output.json`);
+  if (!fileExists(pathJsonFile)) {
+    return `The file that contains jest result not exist`;
+  }
+
+  const jestOutput = require(pathJsonFile);
 
   let date = new Date();
 
   console.info(
     `\n# ${virtualUser} Jest report : ${suiteIdentifier}\n`
-      .yellow.bold
+      .yellow?.bold
   );
 
   console.info(
     `Test uuid: ${testUuid}\n`
-      .yellow.bold
+      .yellow?.bold
   );
 
   console.info(
     `Test timestamp: ${date.toString()}\n`
-      .yellow.bold
+      .yellow?.bold
   );
 
   const tableHead = [];
