@@ -36,7 +36,6 @@ describe('Create Table of Report to Wonka Company', () => {
     test('Should return table if correct data is sent, to Wonka Company', async () => {
         const rootPath = path.join(path.dirname(__filename), "Wonka");
         const table = await createTable("second-run", 484848, 155151, rootPath, ["first", "second", "third"], "dynamicDeep");
-        console.log(table);
         expect(table.length).toBe(1)
     });
     test('Should return the correct number of headers', async () => {

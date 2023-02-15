@@ -159,9 +159,17 @@ const getVariable = (variable) => {
  * Sort the testResults alphabetically at the first level
  */
 const sortTestResults = (results) => {
+
+  if (!results) {
+    return "You must send an array with data";
+  };
+  if (results.length === 0) {
+    return "The array must contain data";
+  };
+
   // Return result if it only has one content
   if (results.length === 1)
-    return results
+    return results;
   
   // Get the result object
   let object = results.slice(0);
@@ -170,6 +178,7 @@ const sortTestResults = (results) => {
   const OS_SPLIT = os.type() === "Windows_NT" ? "\\" : "/";
 
   // Get the results in alphabetical order at the first level
+
   object.sort((firstElement, secondElement) => {
     let firstOriginalPathTestFile = firstElement.name.split(OS_SPLIT);
     let secondOriginalPathTestFile = secondElement.name.split(OS_SPLIT);
@@ -180,7 +189,7 @@ const sortTestResults = (results) => {
     let first = firstOriginalPathTestFile.slice(testsIndex + 1);
     let second = secondOriginalPathTestFile.slice(testsIndex + 1);
     if(first == -1 || second == - 1) {
-      return 0
+      return 0;
     }
     first = first[0].toLowerCase()
     second = second[0].toLowerCase()
@@ -193,16 +202,15 @@ const sortTestResults = (results) => {
       let featureNameFirst = firstOriginalPathTestFile.slice(testsIndex + 2, countFirstOriginalPathTestFile - 1).join("/");
       let featureNameSecond = secondOriginalPathTestFile.slice(testsIndex + 2, countSecondOriginalPathTestFile - 1).join("/");
       if(!featureNameFirst || !featureNameSecond) {
-        return 0
+        return 0;
       }
-      featureNameFirst = featureNameFirst.toLowerCase()
-      featureNameSecond = featureNameSecond.toLowerCase()
-      return featureNameFirst < featureNameSecond ? -1 : featureNameFirst > featureNameSecond ? 1 : 0
+      featureNameFirst = featureNameFirst.toLowerCase();
+      featureNameSecond = featureNameSecond.toLowerCase();
+      return featureNameFirst < featureNameSecond ? -1 : featureNameFirst > featureNameSecond ? 1 : 0;
     }
     // return first < second ? -1 : first > second ? 1 : 0
-  })
-
-  return object
+  });
+  return object;
 }
 
 /**
@@ -317,7 +325,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
    * Verify that the report is generated in HTML
    */
   if (!reportWeb)
-    return;
+    return "The report web is not required here";
 
   const jestOutput = require( path.join(rootPath,`${suiteIdentifier}-jest-output.json`));
   let testResults = sortTestResults(jestOutput.testResults);
