@@ -230,7 +230,7 @@ const takeScreenshot = async ({ driver, filePath, screenshotAlias, error_screen 
   const DEFAULT_PATH =
     error_screen
       ? `.${SPLIT_PATH}report${SPLIT_PATH}${TEST_UUID}${SPLIT_PATH}${EXECUTION_SUITE}${SPLIT_PATH}screenshots`
-      : '.${SPLIT_PATH}screenshots';
+      : `.${SPLIT_PATH}screenshots`;
 
   // Get the execution path of the test and add the folder for the test id
   let file_path = filePath.split(SPLIT_PATH);
@@ -343,6 +343,9 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
   if (!reportWeb)
     return "The report web is not required here";
 
+  if (!fileExists(path.join(rootPath,`${suiteIdentifier}-jest-output.json`))){
+    return "There isnt jest output test";
+  }
   const jestOutput = require( path.join(rootPath,`${suiteIdentifier}-jest-output.json`));
   let testResults = sortTestResults(jestOutput.testResults);
   
@@ -485,6 +488,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
     return "Created report";
   } catch (err) {
     console.log(err)
+    return err;
   }
 };
 
@@ -656,5 +660,6 @@ module.exports = {
   sortTestResults,
   takeScreenshot,
   createReportHTML,
-  createTable
+  createTable,
+  fileExists
 }

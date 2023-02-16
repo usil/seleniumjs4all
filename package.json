@@ -8,11 +8,12 @@
   },
   "scripts": {
     "dev": "node .",
-    "test": "jest --coverage --silent && jest-coverage-badges --output './badges'"
+    "test": "jest --coverage --silent && jest-coverage-badges --output './badges'",
+    "test:only": "./tests/test.sh"
   },
   "jest": {
     "coverageReporters": [
-      "json-summary", 
+      "json-summary",
       "text",
       "lcov"
     ],
@@ -20,7 +21,9 @@
       "<rootDir>/src/",
       "<rootDir>/tests/"
     ],
-    "collectCoverageFrom": ["src/**/*.js"]
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   },
   "keywords": [
     "selenium",
@@ -50,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
+    "@types/jest": "^29.4.0",
     "browser-resolve": "^2.0.0",
     "jest": "^27.5.1",
     "jest-html-reporter": "^3.4.2"
