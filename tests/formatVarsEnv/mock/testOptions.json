@@ -1,0 +1,37 @@
+{
+  "files": [],
+  "virtualUserMultiplier": 1,
+  "reportWeb": true,
+  "reportMode": "dynamicDeep",
+  "columnNames": [
+    "enterprise",
+    "feature",
+    "scenario"
+  ],
+  "virtualUserSuites": [
+    {
+      "skip": false,
+      "identifier": "first-run",
+      "files": [],
+      "variables": {
+        "usil_web": {
+          "url": "https://usil.edu.pe",
+          "expect_about": "ABOUT US",
+          "expect_map": "MAJORS AND PROGRAMS",
+          "expect_research": "RESEARCH",
+          "expect_international": "INTERNATIONAL",
+          "expect_admssion": "ADMISSION",
+          "expect_slider_load": 1,
+          "expect_slider_img_exists": true,
+          "usil_search": "USIL",
+          "expect_search": 1,
+          "expect_search2": 1,
+          "sss":{
+            "ddd": "54454"
+          }
+        },
+        "new_variable": 54
+      }
+    }
+  ]
+}

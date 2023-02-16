@@ -1,6 +1,6 @@
 const { getVariable } = require("../../src/helpers/testHelpers");
 
-describe.only('Get Variable', () => {
+describe('Get Variable', () => {
     test('should return the correct variable, to number ', () => {
         process.env.RANDOM = 5695;
         const resp = getVariable("RANDOM")
@@ -14,7 +14,7 @@ describe.only('Get Variable', () => {
         expect(resp).toBe(process.env.RANDOM_TWO)
     });
 
-    test.only('should return the correct variable, to lower case ', () => {
+    test('should return the correct variable, to lower case ', () => {
         process.env.new_new03 = "test04";
         const resp = getVariable("new_new03")
         expect(resp).toBe(process.env.new_new03)
