@@ -8,16 +8,19 @@
   },
   "scripts": {
     "dev": "node .",
-    "test": "jest",
-    "test:coverage": "npm test -- --coverage",
-    "test:badges": "jest-coverage-badges --output './badges'"
+    "test": "jest --coverage --silent && jest-coverage-badges --output './badges'"
   },
   "jest": {
     "coverageReporters": [
       "json-summary", 
       "text",
       "lcov"
-    ]
+    ],
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/tests/"
+    ],
+    "collectCoverageFrom": ["src/**/*.js"]
   },
   "keywords": [
     "selenium",

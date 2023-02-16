@@ -19,7 +19,7 @@ const mailer = new Mailer();
 
 
 const rootPath = path.dirname(packPath(("")));
-const testOptions = envSettings.loadJsonFileSync( path.join(rootPath,"testOptions.json"), "utf8");
+const testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptions.json"), "utf8");
 const columnNames = testOptions.columnNames;
 const reportMode = testOptions.reportMode;
 
@@ -98,7 +98,7 @@ const main = () => {
           if (columnNames.length > 0) {
             const tableCreated = await createTable(suiteIdentifier, varToEnv.EXECUTION_SUITE, varToEnv.TEST_UUID, rootPath, columnNames, reportMode);
             console.info(tableCreated.toString() + "\n"); //* Prints the table
-            createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID)
+            createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
             .then( () => {
               if (process.env.SEND_REPORT === 'send') {
                 compresser.run(resolveSourcePath, resolveSourcePath);
@@ -114,7 +114,7 @@ const main = () => {
               if (columnNames.length > 0) {
                 const tableCreated = await createTable(suiteIdentifier, index, varToEnv.TEST_UUID, rootPath, columnNames, reportMode);
                 console.info(tableCreated.toString() + "\n"); //* Prints the table
-                createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID)
+                createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
                 .then(() => {
                   if (process.env.SEND_REPORT === 'send') {
                     compresser.run(resolveSourcePath, resolveSourcePath);

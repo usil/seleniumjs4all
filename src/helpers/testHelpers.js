@@ -1,7 +1,6 @@
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
-const packPath = require("package-json-path");
 const Table = require("cli-table");
 
 
@@ -290,13 +289,30 @@ const takeScreenshot = async ({ driver, filePath, screenshotAlias, error_screen 
  * @param {string | number} suiteIdentifier Test Suite Identifier
  * @param {number} virtualUser Test run number
  * @param {string} testUuid Running test identifier
+ * @param {Object} testOptions Options for the general test
+ * @param {string} rootPath Path of root of your project
+ * 
+ * 
  * @description
  * Adapt the test results to three columns and then call the function 
  * to create the web report
  */
-const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testUuid) => {
+const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testUuid, rootPath) => {
 
-  const rootPath = path.dirname(packPath(("")));
+  if (!suiteIdentifier) {
+    return 'The suiteIdentifier must be a real value { string | number | string && number }, diferent undefined, null, etc.';
+  }
+  if (virtualUser === undefined || virtualUser === null) {
+    return 'The virtualUser must be a real value { string | number | string && number }, diferent undefined, null, etc.';
+  }
+  if (!testOptions) {
+    return 'The testOptions must be a real value { Object }, diferent undefined, null, etc.';
+  }
+  if (!testUuid) {
+    return 'The testUuid must be a real value { string | number | string && number }, diferent undefined, null, etc.';
+  }
+
+  // const rootPath = path.dirname(packPath(("")));
   /**
    * @description
    * Receive the seconds and return in hh:mm:ss format
@@ -466,6 +482,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
       result,
       'utf-8'
     );
+    return "Created report";
   } catch (err) {
     console.log(err)
   }
