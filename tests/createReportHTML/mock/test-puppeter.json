@@ -11,7 +11,7 @@
   "virtualUserSuites": [
     {
       "skip": false,
-      "identifier": "03test-run",
+      "identifier": "test-pup",
       "files": [],
       "variables": {
         "usil_web": {

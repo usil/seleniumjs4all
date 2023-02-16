@@ -48,6 +48,7 @@
     "jest-coverage-badges": "^1.1.2",
     "nodemailer": "^6.9.1",
     "package-json-path": "^1.0.9",
+    "puppeteer": "^18.1.0",
     "selenium-webdriver": "^4.1.1",
     "uuid": "^9.0.0"
   },

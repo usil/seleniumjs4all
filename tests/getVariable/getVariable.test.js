@@ -10,7 +10,6 @@ describe('Get Variable', () => {
     test('should return the correct variable, to string ', () => {
         process.env.RANDOM_TWO = "test2";
         const resp = getVariable("RANDOM_TWO")
-        console.log(resp);
         expect(resp).toBe(process.env.RANDOM_TWO)
     });
 

@@ -5,8 +5,11 @@ const envSettings = new EnvSettings();
 const packPath = require("package-json-path");
 const { v4 } = require("uuid");
 const rootPath = path.dirname(packPath(("")));
+const puppeteer = require('puppeteer');
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
-describe('Create report html', () => {
+describe('Create report htmljsdom', () => {
     test('Should return message if suiteIdentifier is null ', async () => {
         const resp = await createReportHTML(null, 6226, { name: "test" }, 54545, rootPath);
         expect(resp).toBe("The suiteIdentifier must be a real value { string | number | string && number }, diferent undefined, null, etc.")
@@ -77,5 +80,43 @@ describe('Create report html', () => {
         expect(resp).toBe("Created report")
         const existReport = fileExists(path.join(rootPath, "report", TEST_UUID, '0', "index.html"));
         expect(existReport).toBe(true);
+    });
+
+    test('should be find the correct headers, rows and graphic in the report generated', async () => {
+        const rootPath = path.dirname(packPath(("")));
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "test-puppeter.json"), "utf8");
+        const TEST_UUID = v4();
+        const suiteIdentifier = testOptions.virtualUserSuites[0].identifier;        
+        const resp = await createReportHTML(suiteIdentifier, 0, testOptions, TEST_UUID, path.join(__dirname, "mock"));
+        expect(resp).toBe("Created report")
+        const routeOfHTMLReport = path.join(rootPath, "report", TEST_UUID, '0', "index.html");
+        const existReport = fileExists(routeOfHTMLReport);
+        expect(existReport).toBe(true);
+        const browser = await puppeteer.launch({ 
+            headless: true,
+            args: [
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-setuid-sandbox',
+                '--no-first-run',
+                '--no-sandbox',
+                '--no-zygote',
+                '--deterministic-fetch',
+                '--disable-features=IsolateOrigins',
+                '--disable-site-isolation-trials',
+            ]
+          });
+        const page = await browser.newPage();
+        await page.goto("file:///" + routeOfHTMLReport);
+
+        const headersTable = await page.$$('.test-result-table-header-cell');
+        expect(headersTable.length).toBe(5);
+        const rowsTable = await page.$x("/html/body/table/tbody/tr");
+        expect(rowsTable.length).toBe(5);
+        const charGraphic = await page.$x("//*[@id='myChar']");
+        expect(charGraphic).toBeDefined()
+        // await page.close()
+        await browser.close();
+
     });
 });

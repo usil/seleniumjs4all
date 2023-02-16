@@ -1,0 +1,84 @@
+{
+    "numFailedTestSuites": 0,
+    "numFailedTests": 0,
+    "numPassedTestSuites": 1,
+    "numPassedTests": 4,
+    "numPendingTestSuites": 0,
+    "numPendingTests": 0,
+    "numRuntimeErrorTestSuites": 0,
+    "numTodoTests": 0,
+    "numTotalTestSuites": 1,
+    "numTotalTests": 4,
+    "openHandles": [],
+    "snapshot": {
+        "added": 0,
+        "didUpdate": false,
+        "failure": false,
+        "filesAdded": 0,
+        "filesRemoved": 0,
+        "filesRemovedList": [],
+        "filesUnmatched": 0,
+        "filesUpdated": 0,
+        "matched": 0,
+        "total": 0,
+        "unchecked": 0,
+        "uncheckedKeysByFile": [],
+        "unmatched": 0,
+        "updated": 0
+    },
+    "startTime": 1676394707948,
+    "success": true,
+    "testResults": [
+        {
+            "assertionResults": [
+                {
+                    "ancestorTitles": [
+                        "Create Table of Report"
+                    ],
+                    "failureMessages": [],
+                    "fullName": "Create Table of Report Should return table if correct data is sent",
+                    "location": null,
+                    "status": "passed",
+                    "title": "Should return table if correct data is sent"
+                },
+                {
+                    "ancestorTitles": [
+                        "Create Table of Report"
+                    ],
+                    "failureMessages": [],
+                    "fullName": "Create Table of Report Should return negative response if sent bad identifier",
+                    "location": null,
+                    "status": "passed",
+                    "title": "Should return negative response if sent bad identifier"
+                },
+                {
+                    "ancestorTitles": [
+                        "Create Table of Report"
+                    ],
+                    "failureMessages": [],
+                    "fullName": "Create Table of Report SuiteIdentifier should be a real value, diferent undefined",
+                    "location": null,
+                    "status": "passed",
+                    "title": "SuiteIdentifier should be a real value, diferent undefined"
+                },
+                {
+                    "ancestorTitles": [
+                        "Create Table of Report"
+                    ],
+                    "failureMessages": [],
+                    "fullName": "Create Table of Report SuiteIdentifier should be a real value, diferent null",
+                    "location": null,
+                    "status": "passed",
+                    "title": "SuiteIdentifier should be a real value, diferent null"
+                }
+            ],
+            "endTime": 1676394708093,
+            "message": "",
+            "name": "/home/oem/Documentos/work/seleniumjs4all/tests/createTable/createTable.test.js",
+            "startTime": 1676394707963,
+            "status": "passed",
+            "summary": ""
+        }
+    ],
+    "wasInterrupted": false
+}

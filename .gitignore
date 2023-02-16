@@ -3,7 +3,7 @@ screenshots
 tmp
 report
 jest-output.json
-*-jest-output.json
+/*-jest-output.json
 .env
 
 # compiled output
