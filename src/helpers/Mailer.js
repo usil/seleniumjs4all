@@ -46,15 +46,16 @@ function MailService() {
    * @description Send Mail with the generated report
    * @returns {void}
    */
-  this.sendMail = async (params, uuid, status) => {
+  this.sendMail = async (params, uuid, status, body = "") => {
     this.initialize();
     const mailOptions = {
       from: process.env.SMTP_FROM_ALIAS ?? process.env.SMTP_USER,
       to:  process.env.SMTP_TO,
       subject:  (process.env.SMTP_SUBJECT ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
+      html: "<p>" + body + "</p>",
       attachments: [
         {
-            filename: params?.filename + '.gzip',
+            filename: params?.filename + '.zip',
             path: params?.sourcePath,
             contentType: params?.contentType
         }

@@ -102,7 +102,7 @@ const main = () => {
             .then( () => {
               if (process.env.SEND_REPORT === 'send') {
                 compresser.run(resolveSourcePath, resolveSourcePath);
-                mailer.sendMail(params, varToEnv.TEST_UUID, "Success");
+                mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " + `${suiteIdentifier}.`);
               }
               });
             }
@@ -118,11 +118,9 @@ const main = () => {
                 .then(() => {
                   if (process.env.SEND_REPORT === 'send') {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed");
+                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `${suiteIdentifier}. Review the attached html report by opening it in your preferred browser.` );
                   }
                 });
-
-
               }
             } else {
               console.error("error".red, err);
