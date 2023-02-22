@@ -11,3 +11,4 @@ jest-output.json
 /out-tsc
 
 coverage
+/.vscode
