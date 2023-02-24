@@ -81,7 +81,6 @@ const main = () => {
         const params = {
           filename: varToEnv.TEST_UUID,
           sourcePath: resolveSourcePath + '.zip',
-          // contentType: "application/javascript",
         }
         //* Spawns the jest process
         exec(
