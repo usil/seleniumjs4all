@@ -158,8 +158,8 @@ By default this framework only prints 3 columns. If you need to have more column
 | SMTP_PASSWORD                   | Password of your mail server               |           |
 | SMTP_SECURE                   | Encrypt. <br> If your host is for gmail, your value should be true. <br> If your host is for office 365, your value should be false               | true           |
 | SMTP_TLS_CIPHERS                   | Are algorithms that help secure network connections that use Transport Layer Security               |    SSLv3        |
-| SMTP_FROM_ALIAS                   | Should be able equal to the value of SMTP_USER           |            |
-| SMTP_TO                   | Recipient report for mail           |            |
+| SMTP_SENDER_DISPLAYNAME                   | It is the alias of the transmitter           |            |
+| SMTP_RECIPIENTS                   | Recipient report for mail, It can be multiple and separated by  '', ''            |            |
 | SMTP_SUBJECT                  | Subject of mail           |   Selenium Reporter         |
 
 ***Example***
@@ -172,7 +172,7 @@ export SMTP_USER=changeme@server
 export SMTP_PASSWORD=changeme
 export SMTP_SECURE=true
 export SMTP_TLS_CIPHERS=SSLv3
-export SMTP_TO=recipient@server
+export SMTP_RECIPIENTS=recipient@server
 export SMTP_SUBJECT="Selenium Report"
 ```
 

@@ -3,55 +3,60 @@ const nodemailer = require('nodemailer');
 function MailService() {
   this.transporter;
 
-  this.initialize = () => {
+  this.initialize = (smtpParams) => {
     if (typeof this.transporter !== 'undefined') {
       return;
     }
 
     const smtpSettings = {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE ?? true,
+      host: smtpParams.smtpHost,
+      port: smtpParams.smtpPort,
+      secure: smtpParams.smtpSecure ?? true,
       tls: {
-        ciphers: process.env.SMTP_TLS_CIPHERS ?? 'SSLv3',
+        ciphers: smtpParams.smtpTlsCiphers ?? 'SSLv3',
       },
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
+        user: smtpParams.smtpUser,
+        pass: smtpParams.smtpPassword,
       },
     };
 
-    if (process.env.SMTP_SECURE) {
-      smtpSettings.secure = JSON.parse(process.env.SMTP_SECURE.toLowerCase());
+    if (smtpParams.smtpSecure) {
+      smtpSettings.secure = JSON.parse(smtpParams.smtpSecure.toLowerCase());
     }
 
-    if (process.env.SMTP_TLS_CIPHERS) {
-      smtpSettings.tls.ciphers = process.env.SMTP_TLS_CIPHERS;
+    if (smtpParams.smtpTlsCiphers) {
+      smtpSettings.tls.ciphers = smtpParams.smtpTlsCiphers;
     }
 
     this.transporter = nodemailer.createTransport(smtpSettings);
   };
   /**
    *
-   * @param {Object} params Params to send Mail
+   * @param {Object} params Params to send Mail transmitter
    * @param {string} params.filename filename is a name that report will send
    * @param {string} params.sourcePath sourcePath is a path of file to find and then send
    * @param {string} params.contentType contentType type of content to send
    * @param {string | number} uuid uuid is unique identifier
    * @param {string} status status <failed | passed>
    * 
-   * 
-   * 
-   * 
    * @description Send Mail with the generated report
    * @returns {void}
    */
-  this.sendMail = async (params, uuid, status, body = "") => {
-    this.initialize();
+  this.sendMail = async (params, uuid, status, body = "", smtpParams) => {
+    this.initialize(smtpParams);
+
+    let fromDefinitive;
+    if (!smtpParams.smtpSenderDisplayname) {
+      fromDefinitive = smtpParams.smtpUser;
+    } else {
+      fromDefinitive = `${smtpParams.smtpSenderDisplayname} <${smtpParams.smtpUser}>`;
+    }
+    
     const mailOptions = {
-      from: process.env.SMTP_FROM_ALIAS ?? process.env.SMTP_USER,
-      to:  process.env.SMTP_TO,
-      subject:  (process.env.SMTP_SUBJECT ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
+      from: fromDefinitive,
+      to:  smtpParams.smtpRecipients,
+      subject:  (smtpParams.smtpSubject ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
       html: "<p>" + body + "</p>",
       attachments: [
         {
@@ -66,7 +71,7 @@ function MailService() {
       return;
     }
     if (typeof mailOptions.to == 'undefined') {
-      console.log('Error: SMTP_TO is required to send an email');
+      console.log('Error: SMTP_RECIPIENTS is required to send an email');
       return;
     }
     if (typeof mailOptions.subject == 'undefined') {

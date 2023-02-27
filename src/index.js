@@ -22,7 +22,7 @@ const rootPath = path.dirname(packPath(("")));
 const testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptions.json"), "utf8");
 const columnNames = testOptions.columnNames;
 const reportMode = testOptions.reportMode;
-
+const smtpParams = testOptions.smtp;
 
 /**
  * @description app entrypoint
@@ -99,9 +99,9 @@ const main = () => {
             console.info(tableCreated.toString() + "\n"); //* Prints the table
             createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
             .then( () => {
-              if (process.env.SEND_REPORT === 'send') {
+              if (smtpParams.smtpSendReport === 'send') {
                 compresser.run(resolveSourcePath, resolveSourcePath);
-                mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " + `${suiteIdentifier}.`);
+                mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " + `${suiteIdentifier}.`, smtpParams);
               }
               });
             }
@@ -115,9 +115,9 @@ const main = () => {
                 console.info(tableCreated.toString() + "\n"); //* Prints the table
                 createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
                 .then(() => {
-                  if (process.env.SEND_REPORT === 'send') {
+                  if (smtpParams.smtpSendReport === 'send') {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `${suiteIdentifier}. Review the attached html report by opening it in your preferred browser.` );
+                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `${suiteIdentifier}. Review the attached html report by opening it in your preferred browser.`, smtpParams);
                   }
                 });
               }
