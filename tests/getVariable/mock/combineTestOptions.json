@@ -1,0 +1,37 @@
+{
+  "files": [],
+  "virtualUserMultiplier": 1,
+  "reportWeb": true,
+  "reportMode": "dynamicDeep",
+  "columnNames": [
+    "enterprise",
+    "feature",
+    "scenario"
+  ],
+  "virtualUserSuites": [
+    {
+      "skip": false,
+      "identifier": "first-run",
+      "files": [],
+      "variables": {
+        "first": 888888,
+        "new_variable": 54,
+        "post": 8451,
+        "web": {
+          "level_2":{
+            "random_1": "54454",
+            "random_2": "eee",
+            "level_3":{
+              "last": "sdfs96",
+              "random_3": "515s1f5s1f",
+              "level_4":{
+                "pio": "sdfs96",
+                "pie": "random text"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

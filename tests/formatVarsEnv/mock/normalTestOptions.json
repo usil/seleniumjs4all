@@ -1,0 +1,24 @@
+{
+  "files": [],
+  "virtualUserMultiplier": 1,
+  "reportWeb": true,
+  "reportMode": "dynamicDeep",
+  "columnNames": [
+    "enterprise",
+    "feature",
+    "scenario"
+  ],
+  "virtualUserSuites": [
+    {
+      "skip": false,
+      "identifier": "first-run",
+      "files": [],
+      "variables": {
+        "first": "free",
+        "new_variable": 54,
+        "post": 8451,
+        "855": "random value"
+      }
+    }
+  ]
+}

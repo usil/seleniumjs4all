@@ -40,6 +40,9 @@ const getCleanedString = (string) => {
 /**
  * 
  * @param {object} vars User-defined variables
+ * @param {string} pre_name name placed at the beginning of a transformed variable 
+ * @param {object} vars_to_env Object of variables changed
+ * 
  * @returns {object} Format for environment variables
  * 
  * @description
@@ -72,11 +75,30 @@ const getCleanedString = (string) => {
  *    "cartoonNetwork___item": "door"
  *  }
  * 
- */
-const formatVarsEnv = (vars) => {
+*/
+const formatVarsEnv = (vars, pre_name = "", vars_to_env = {}) => {
+  for (const propertyObject in vars) {
+    let originalPropertyObject = vars[propertyObject];
+    if (typeof originalPropertyObject == "object") {
+      let concatAntecesor = pre_name.concat(propertyObject, "___");
+      vars_to_env = {...formatVarsEnv(originalPropertyObject, concatAntecesor, vars_to_env )};
+    } else {
+        let new_var = `
+        {"${pre_name.length > 0 ? pre_name : ""}${propertyObject}":"${vars[propertyObject]}"}
+        `;
+        new_var = JSON.parse(new_var);
+        vars_to_env = { ...vars_to_env, ...new_var };
+    }
+  }
+  return vars_to_env;
+}
+
+const formatVarsEnvOriginal = (vars) => {
   let vars_to_env = {};
 
   for (const propertyObject in vars) {
+    //key , value
+    console.log(propertyObject, "-+", vars[propertyObject].length, typeof vars[propertyObject], "+-");
     /**
      * If the property does not have an object assigned, the property and its 
      * value are used for the vars_to_env
@@ -143,7 +165,7 @@ const formatVarsEnv = (vars) => {
  * 
  */
 const getVariable = (variable) => {
-  let var_search = variable.replace('.', '___');
+  let var_search = variable.replaceAll('.', '___');
   var_search = process.env[var_search];
 
   return var_search
