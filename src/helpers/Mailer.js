@@ -28,7 +28,7 @@ function MailService() {
    * @param {Object} params Params to send Mail transmitter
    * @param {string} params.filename filename is a name that report will send
    * @param {string} params.sourcePath sourcePath is a path of file to find and then send
-   * @param {string} params.contentType contentType type of content to send
+   * @param {string} params.suiteIdentifier suite identifier from test
    * @param {string | number} uuid uuid is unique identifier
    * @param {string} status status <failed | passed>
    * 
@@ -48,7 +48,7 @@ function MailService() {
     const mailOptions = {
       from: fromDefinitive,
       to:  smtpParams?.smtpRecipients,
-      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
+      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + params?.suiteIdentifier + "-" + uuid + " - status: " + status,
       html: "<p>" + body + "</p>",
       attachments: [
         {
