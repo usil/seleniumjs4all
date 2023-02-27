@@ -8,7 +8,7 @@
     "scenario"
   ],
   "smtp": {
-    "smtpSendReport": "${SEND_REPORT}",
+    "smtpSendReport": "${ENABLE_SMTP_NOTIFICATION}",
     "smtpHost": "${SMTP_HOST}",
     "smtpPort": "${SMTP_PORT}",
     "smtpUser": "${SMTP_USER}",

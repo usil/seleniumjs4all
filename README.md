@@ -86,6 +86,18 @@ Example in `testOptions.json` file
   "reportWeb":true,
   "reportMode": "staticDeep",
   "columnNames": ["enterprise", "feature", "scenario"],
+  "smtp": {
+    "enableSmtpNotification": "${ENABLE_SMTP_NOTIFICATION}",
+    "smtpHost": "${SMTP_HOST}",
+    "smtpPort": "${SMTP_PORT}",
+    "smtpUser": "${SMTP_USER}",
+    "smtpPassword": "${SMTP_PASSWORD}",
+    "smtpSecure": "${SMTP_SECURE}",
+    "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
+    "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
+    "smtpRecipients": "${SMTP_RECIPIENTS}",
+    "smtpSubject": "${SMTP_SUBJECT}"
+  },
   "virtualUserSuites": [
     {
       "skip": false,
@@ -151,7 +163,7 @@ By default this framework only prints 3 columns. If you need to have more column
 
 | Variable                             | Description                                    | Default Value |
 | ------------------------------------ | ---------------------------------------------- | ------------- |
-| SEND_REPORT                  | If you want to send mail with report, this variable should be equals to <b>send</b>               |           |
+| ENABLE_SMTP_NOTIFICATION                  | If you want to send mail with report, this variable should be equals to <b>true</b>               |           |
 | SMTP_HOST                   | Sender identifier               |           |
 | SMTP_PORT                   | Communication endpoint that defines the routing of email transactions               |           |
 | SMTP_USER                   | User of your mail server               |            |
@@ -165,7 +177,7 @@ By default this framework only prints 3 columns. If you need to have more column
 ***Example***
 
 ```bash
-export SEND_REPORT=send
+export ENABLE_SMTP_NOTIFICATION=true
 export SMTP_HOST=smtp.chageme.com
 export SMTP_PORT=465
 export SMTP_USER=changeme@server

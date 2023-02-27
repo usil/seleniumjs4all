@@ -21,14 +21,6 @@ function MailService() {
       },
     };
 
-    if (smtpParams?.smtpSecure) {
-      smtpSettings.secure = JSON.parse(smtpParams.smtpSecure.toLowerCase());
-    }
-
-    if (smtpParams?.smtpTlsCiphers) {
-      smtpSettings.tls.ciphers = smtpParams?.smtpTlsCiphers;
-    }
-
     this.transporter = nodemailer.createTransport(smtpSettings);
   };
   /**
@@ -47,7 +39,7 @@ function MailService() {
     this.initialize(smtpParams);
 
     let fromDefinitive;
-    if (!smtpParams?.smtpSenderDisplayname) {
+    if (!smtpParams?.smtpSenderDisplayname || smtpParams?.smtpSenderDisplayname?.includes('$')) {
       fromDefinitive = smtpParams?.smtpUser;
     } else {
       fromDefinitive = `${smtpParams?.smtpSenderDisplayname} <${smtpParams?.smtpUser}>`;
