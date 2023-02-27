@@ -99,7 +99,7 @@ const main = () => {
             console.info(tableCreated.toString() + "\n"); //* Prints the table
             createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
             .then( () => {
-              if (smtpParams.smtpSendReport === 'send') {
+              if (smtpParams?.smtpSendReport === 'send') {
                 compresser.run(resolveSourcePath, resolveSourcePath);
                 mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " + `${suiteIdentifier}.`, smtpParams);
               }
@@ -115,7 +115,7 @@ const main = () => {
                 console.info(tableCreated.toString() + "\n"); //* Prints the table
                 createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
                 .then(() => {
-                  if (smtpParams.smtpSendReport === 'send') {
+                  if (smtpParams?.smtpSendReport === 'send') {
                     compresser.run(resolveSourcePath, resolveSourcePath);
                     mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `${suiteIdentifier}. Review the attached html report by opening it in your preferred browser.`, smtpParams);
                   }

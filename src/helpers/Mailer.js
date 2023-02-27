@@ -9,24 +9,24 @@ function MailService() {
     }
 
     const smtpSettings = {
-      host: smtpParams.smtpHost,
-      port: smtpParams.smtpPort,
-      secure: smtpParams.smtpSecure ?? true,
+      host: smtpParams?.smtpHost,
+      port: smtpParams?.smtpPort,
+      secure: smtpParams?.smtpSecure ?? true,
       tls: {
-        ciphers: smtpParams.smtpTlsCiphers ?? 'SSLv3',
+        ciphers: smtpParams?.smtpTlsCiphers ?? 'SSLv3',
       },
       auth: {
-        user: smtpParams.smtpUser,
-        pass: smtpParams.smtpPassword,
+        user: smtpParams?.smtpUser,
+        pass: smtpParams?.smtpPassword,
       },
     };
 
-    if (smtpParams.smtpSecure) {
+    if (smtpParams?.smtpSecure) {
       smtpSettings.secure = JSON.parse(smtpParams.smtpSecure.toLowerCase());
     }
 
-    if (smtpParams.smtpTlsCiphers) {
-      smtpSettings.tls.ciphers = smtpParams.smtpTlsCiphers;
+    if (smtpParams?.smtpTlsCiphers) {
+      smtpSettings.tls.ciphers = smtpParams?.smtpTlsCiphers;
     }
 
     this.transporter = nodemailer.createTransport(smtpSettings);
@@ -47,16 +47,16 @@ function MailService() {
     this.initialize(smtpParams);
 
     let fromDefinitive;
-    if (!smtpParams.smtpSenderDisplayname) {
-      fromDefinitive = smtpParams.smtpUser;
+    if (!smtpParams?.smtpSenderDisplayname) {
+      fromDefinitive = smtpParams?.smtpUser;
     } else {
-      fromDefinitive = `${smtpParams.smtpSenderDisplayname} <${smtpParams.smtpUser}>`;
+      fromDefinitive = `${smtpParams?.smtpSenderDisplayname} <${smtpParams?.smtpUser}>`;
     }
-    
+
     const mailOptions = {
       from: fromDefinitive,
-      to:  smtpParams.smtpRecipients,
-      subject:  (smtpParams.smtpSubject ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
+      to:  smtpParams?.smtpRecipients,
+      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
       html: "<p>" + body + "</p>",
       attachments: [
         {
