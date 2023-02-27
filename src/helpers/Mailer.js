@@ -48,7 +48,7 @@ function MailService() {
     const mailOptions = {
       from: fromDefinitive,
       to:  smtpParams?.smtpRecipients,
-      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + params?.suiteIdentifier + "-" + uuid + " - status: " + status,
+      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + "#" + params?.suiteIdentifier + " - " + uuid + " - status: " + status,
       html: "<p>" + body + "</p>",
       attachments: [
         {
