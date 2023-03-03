@@ -12,12 +12,6 @@ const rootPath = path.dirname(packPath(("")));
 
 const browserOptions = require( path.join(rootPath, "browserOptions.json"));
 
-// * Required for headless
-const screenSize = {
-  width: 1080,
-  height: 1080,
-};
-
 const browserDriver = {
   /**
    *
@@ -30,7 +24,7 @@ const browserDriver = {
       .setChromeOptions(
         new chrome.Options()
           .addArguments(...browserOptions.arguments)
-          .windowSize(screenSize)
+          // .windowSize(screenSize)
       )
       .build();
     return driver;
@@ -46,7 +40,7 @@ const browserDriver = {
       .setFirefoxOptions(
         new firefox.Options()
           .addArguments(...browserOptions.arguments)
-          .windowSize(screenSize)
+          // .windowSize(screenSize)
       )
       .build();
     return driver;
