@@ -100,7 +100,7 @@ const main = () => {
             console.info(tableCreated.toString() + "\n"); //* Prints the table
             createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
             .then( () => {
-              if (smtpParams?.enableSmtpNotification == true) {
+              if (smtpParams?.enableSmtpNotification == true && smtpParams?.disableMailNotificationOnSuccess != true) {
                 compresser.run(resolveSourcePath, resolveSourcePath);
                 mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " +  `<b>${suiteIdentifier}.</b>`, smtpParams, "\u{1f600}");
               }

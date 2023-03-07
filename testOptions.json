@@ -10,6 +10,7 @@
   ],
   "smtp": {
     "enableSmtpNotification": "${ENABLE_SMTP_NOTIFICATION}",
+    "disableMailNotificationOnSuccess": "${DISABLE_MAIL_NOTIFICATION_ON_SUCCESS}",
     "smtpHost": "${SMTP_HOST}",
     "smtpPort": "${SMTP_PORT}",
     "smtpUser": "${SMTP_USER}",

@@ -88,6 +88,7 @@ Example in `testOptions.json` file
   "columnNames": ["enterprise", "feature", "scenario"],
   "smtp": {
     "enableSmtpNotification": "${ENABLE_SMTP_NOTIFICATION}",
+    "disableMailNotificationOnSuccess": "${DISABLE_MAIL_NOTIFICATION_ON_SUCCESS}",
     "smtpHost": "${SMTP_HOST}",
     "smtpPort": "${SMTP_PORT}",
     "smtpUser": "${SMTP_USER}",
@@ -164,6 +165,7 @@ By default this framework only prints 3 columns. If you need to have more column
 | Variable                             | Description                                    | Default Value |
 | ------------------------------------ | ---------------------------------------------- | ------------- |
 | ENABLE_SMTP_NOTIFICATION                  | If you want to send mail with report, this variable should be equals to <b>true</b>               |           |
+| DISABLE_MAIL_NOTIFICATION_ON_SUCCESS                  | If the test result is successful and this parameter is equal to <b>true</b>, the report will not be mailed.               |           |
 | SMTP_HOST                   | Sender identifier               |           |
 | SMTP_PORT                   | Communication endpoint that defines the routing of email transactions               |           |
 | SMTP_USER                   | User of your mail server               |            |
@@ -178,6 +180,7 @@ By default this framework only prints 3 columns. If you need to have more column
 
 ```bash
 export ENABLE_SMTP_NOTIFICATION=true
+export DISABLE_MAIL_NOTIFICATION_ON_SUCCESS=false
 export SMTP_HOST=smtp.chageme.com
 export SMTP_PORT=465
 export SMTP_USER=changeme@server
