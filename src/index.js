@@ -118,7 +118,7 @@ const main = () => {
                 .then(() => {
                   if (smtpParams?.enableSmtpNotification == true) {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.`, smtpParams, "\u{26d4}");
+                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.`, smtpParams, "\uD83D\uDE21");
                   }
                 });
               }
