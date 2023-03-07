@@ -35,7 +35,7 @@ function MailService() {
    * @description Send Mail with the generated report
    * @returns {void}
    */
-  this.sendMail = async (params, uuid, status, body = "", smtpParams) => {
+  this.sendMail = async (params, uuid, status, body = "", smtpParams, emojiUniCode = "") => {
     this.initialize(smtpParams);
 
     let fromDefinitive;
@@ -48,7 +48,7 @@ function MailService() {
     const mailOptions = {
       from: fromDefinitive,
       to:  smtpParams?.smtpRecipients,
-      subject:  (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + "#" + params?.suiteIdentifier + " - " + uuid + " - status: " + status,
+      subject: emojiUniCode + " " + (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + "#" + params?.suiteIdentifier + " - " + uuid + " - status: " + status,
       html: "<p>" + body + "</p>",
       attachments: [
         {
