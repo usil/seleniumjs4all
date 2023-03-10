@@ -1,5 +1,5 @@
 // my-custom-environment
-const NodeEnvironment = require('jest-environment-node');
+const NodeEnvironment = require('jest-environment-node').TestEnvironment;
 const { takeScreenshot } = require("../helpers/testHelpers");
 
 class CustomNodeEnvironment extends NodeEnvironment {
