@@ -1,3 +1,12 @@
 {
-  "arguments": ["--log-level=1", "--headless", "--no-sandbox", "--disable-gpu"]
+  "options" : {
+    "addArguments": [
+      "--log-level=1",
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--headless",
+      "--window-size=2200,1600"
+    ]
+  }
 }

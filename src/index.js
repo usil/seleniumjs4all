@@ -47,19 +47,31 @@ const main = () => {
         const environmentTestFiles = process.env.FILTERED_FILES
           ? process.env.FILTERED_FILES.toString().split(" ")
           : [];
-
         const suiteTestFiles = suite.files || [];
-
         const globalTestFiles = testOptions.files || [];
-
         const testFiles =
           environmentTestFiles.length > 0
             ? environmentTestFiles
             : suiteTestFiles.length > 0
               ? suiteTestFiles
               : globalTestFiles;
+        
+        // exclude files for tests
+        const environmentExcludeTestFiles = process.env.EXCLUDE_FILES
+          ? process.env.EXCLUDE_FILES.toString().split(" ")
+          : [];
+        const suiteExcludeTestFiles = suite.excludeFiles || [];
+        const globalExcludeTestFiles = testOptions.excludeFiles || [];
+        const exclueTestFiles =
+          environmentExcludeTestFiles.length > 0
+            ? environmentExcludeTestFiles
+            : suiteExcludeTestFiles.length > 0
+              ? suiteExcludeTestFiles
+              : globalExcludeTestFiles;
 
-        console.log(testFiles.join(" "));
+
+        console.log(testFiles.join(" "), "- files");
+        console.log(exclueTestFiles.join(" "), "- files excludes");
 
         // Format variables for environment variables
         let varToEnv = formatVarsEnv(suite.variables)
@@ -87,7 +99,7 @@ const main = () => {
         exec(
           `npx jest --verbose --json --runInBand --outputFile=${suiteIdentifier}-jest-output.json ${testFiles.join(
             " "
-          )}`,
+          )} --testPathIgnorePatterns=${exclueTestFiles.join(" ")}`,
           {
             env: { ...varToEnv },
           }

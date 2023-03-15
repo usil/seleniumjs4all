@@ -1,5 +1,6 @@
 {
   "files": [],
+  "excludeFiles": [],
   "virtualUserMultiplier": 1,
   "reportWeb": true,
   "reportMode": "dynamicDeep",
