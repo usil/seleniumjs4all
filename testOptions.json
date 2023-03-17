@@ -19,9 +19,8 @@
     "smtpSecure": "${SMTP_SECURE}",
     "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
     "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
-    "smtpRecipients": "${SMTP_RECIPIENTS}",
-    "smtpSubject": "${SMTP_SUBJECT}"
-  },
+    "smtpRecipients": "${SMTP_RECIPIENTS}"
+    },
   "virtualUserSuites": [
     {
       "skip": false,

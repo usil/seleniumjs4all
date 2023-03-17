@@ -96,8 +96,7 @@ Example in `testOptions.json` file
     "smtpSecure": "${SMTP_SECURE}",
     "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
     "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
-    "smtpRecipients": "${SMTP_RECIPIENTS}",
-    "smtpSubject": "${SMTP_SUBJECT}"
+    "smtpRecipients": "${SMTP_RECIPIENTS}"
   },
   "virtualUserSuites": [
     {
@@ -174,7 +173,7 @@ By default this framework only prints 3 columns. If you need to have more column
 | SMTP_TLS_CIPHERS                   | Are algorithms that help secure network connections that use Transport Layer Security               |    SSLv3        |
 | SMTP_SENDER_DISPLAYNAME                   | It is the alias of the transmitter           |            |
 | SMTP_RECIPIENTS                   | Recipient report for mail, It can be multiple and separated by  '', ''            |            |
-| SMTP_SUBJECT                  | Subject of mail           |   Selenium Reporter         |
+
 
 ***Example***
 
@@ -188,8 +187,13 @@ export SMTP_PASSWORD=changeme
 export SMTP_SECURE=true
 export SMTP_TLS_CIPHERS=SSLv3
 export SMTP_RECIPIENTS=recipient@server
-export SMTP_SUBJECT="Selenium Report"
 ```
+
+## Custom subject on report by mail
+
+This is a framework feature to customize the subject of the emailed report. More information in the next link https://github.com/usil/seleniumjs4all/wiki/Send-report-by-mail#custom-subject-on-report-by-mail
+
+<br>
 
 ## Contributors
 

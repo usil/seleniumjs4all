@@ -35,7 +35,7 @@ function MailService() {
    * @description Send Mail with the generated report
    * @returns {void}
    */
-  this.sendMail = async (params, uuid, status, body = "", smtpParams, emojiUniCode = "") => {
+  this.sendMail = async (params, uuid, status, body = "", smtpParams, emojiUniCode = "", customEmailSubjectPattern = null) => {
     this.initialize(smtpParams);
 
     let fromDefinitive;
@@ -43,12 +43,19 @@ function MailService() {
       fromDefinitive = smtpParams?.smtpUser;
     } else {
       fromDefinitive = `${smtpParams?.smtpSenderDisplayname} <${smtpParams?.smtpUser}>`;
-    }
+    };
 
+    const subjectVariables = {
+      emojiUnicode: emojiUniCode,
+      status,
+      virtualUserSuiteIdentifier: params?.suiteIdentifier,
+      testExecutionIdentifier: uuid
+    };
+    const customSubject = await this.subjectPatternEvaluator(customEmailSubjectPattern, subjectVariables);
     const mailOptions = {
       from: fromDefinitive,
       to:  smtpParams?.smtpRecipients,
-      subject: emojiUniCode + " " + (smtpParams?.smtpSubject ?? 'Selenium Reporter') + ": " + "#" + params?.suiteIdentifier + " - " + uuid + " - status: " + status,
+      subject: customSubject,
       html: "<p>" + body + "</p>",
       attachments: [
         {
@@ -83,6 +90,47 @@ function MailService() {
       console.log(error);
     }
   };
+
+  /**
+   *
+   * @param {string} stringPattern stringPattern is a pattern to send the report by mail, more information in the documentation
+   * @param {Object} variables variables to configurate the subject of Mail
+   * @param {string} variables.emojiUnicode is a emoji in format unicode
+   * @param {string} variables.virtualUserSuiteIdentifier virtualUserSuiteIdentifier identifier from test
+   * @param {string} variables.testExecutionIdentifier testExecutionIdentifier is a randomly generated id
+   * @param {string} variables.status status <failed | passed>
+   * 
+   * 
+   * @description It is a function that receives a string pattern and variables that configure the subject according to some rules, more information in the documentation
+   * @returns {string} modified subject
+   */
+
+  this.subjectPatternEvaluator = async (stringPattern, variables) => {
+    if (stringPattern === null || stringPattern.length === 0) {
+      return `${variables.emojiUnicode} Selenium Reporter: #${variables.virtualUserSuiteIdentifier} - ${variables.testExecutionIdentifier} - status: ${variables.status}`
+    }
+    const regex = /\$\{([a-zA-Z\:\_]*)\}/g;
+    const variablesMatches = stringPattern.match(regex) || [];
+    if (variablesMatches.length < 1) {
+      return stringPattern;
+    }    
+    variablesMatches.map(variable => {
+      const variableRegex = /(?<=\$\{)([a-zA-Z\:\_]*)(?=\})/;
+      let pureVariableName = variable.match(variableRegex)[0];
+
+      //verify if variable contains env
+      const indexEnviromentPureVariableName = pureVariableName.search(/(env\:)/);
+
+      if (indexEnviromentPureVariableName > -1 ) {
+        pureVariableName = pureVariableName.replace(/(env\:)/, "");        
+        stringPattern = stringPattern.replace(variable, process.env[pureVariableName])
+      }else {
+        const variableValue = variables[pureVariableName];
+        stringPattern = stringPattern.replace(variable, variableValue);
+      }
+    });
+    return stringPattern;
+  }
 }
 
 module.exports = MailService;
