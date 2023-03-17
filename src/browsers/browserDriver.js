@@ -1,6 +1,5 @@
 const chrome = require("selenium-webdriver/chrome");
 const firefox = require("selenium-webdriver/firefox");
-const finder = require('find-package-json');
 const path = require("path");
 const { Builder } = require("selenium-webdriver");
 require("dotenv").config();

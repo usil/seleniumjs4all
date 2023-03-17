@@ -12,6 +12,10 @@
     "test:only": "./tests/test.sh"
   },
   "jest": {
+    "modulePathIgnorePatterns": [
+      "src/lib/",
+      "src/index.js"
+    ],
     "coverageReporters": [
       "json-summary",
       "text",

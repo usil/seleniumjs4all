@@ -31,13 +31,30 @@ function MailService() {
    * @param {string} params.suiteIdentifier suite identifier from test
    * @param {string | number} uuid uuid is unique identifier
    * @param {string} status status <failed | passed>
+   * @param {Object} smtpParams smtpParams are params to configurate your smtp to send mail
+   * @param {boolean} smtpParams.enableSmtpNotification determines if the email with the report is sent
+   * @param {string} smtpParams.disableMailNotificationOnSuccess determines if the report is sent when the test result is positive
+   * @param {string} smtpParams.smtpHost host of smtp
+   * @param {string} smtpParams.smtpPort port of smtp
+   * @param {string} smtpParams.smtpUser user of smtp
+   * @param {string} smtpParams.smtpPassword password of smtp
+   * @param {string} smtpParams.smtpTlsCiphers 
+   * @param {string} smtpParams.smtpSenderDisplayname alias of smtp
+   * @param {string} smtpParams.smtpRecipients receptors of reports
+   * @param {string} emojiUniCode
+   * @param {string} customEmailSubjectPattern
+   * 
+   * 
    * 
    * @description Send Mail with the generated report
    * @returns {void}
    */
   this.sendMail = async (params, uuid, status, body = "", smtpParams, emojiUniCode = "", customEmailSubjectPattern = null) => {
+    if (typeof params == 'undefined') {
+      console.log('Error: Params is required to send an email');
+      return;
+    }
     this.initialize(smtpParams);
-
     let fromDefinitive;
     if (!smtpParams?.smtpSenderDisplayname || smtpParams?.smtpSenderDisplayname?.includes('$')) {
       fromDefinitive = smtpParams?.smtpUser;
@@ -65,16 +82,8 @@ function MailService() {
         }
       ]
     }
-    if (typeof params == 'undefined') {
-      console.log('Error: Params is required to send an email');
-      return;
-    }
     if (typeof mailOptions.to == 'undefined') {
       console.log('Error: SMTP_RECIPIENTS is required to send an email');
-      return;
-    }
-    if (typeof mailOptions.subject == 'undefined') {
-      console.log('Error: SMTP_SUBJECT is required to send an email');
       return;
     }
     if (typeof mailOptions.attachments == 'undefined' || mailOptions.attachments.length < 1) {
