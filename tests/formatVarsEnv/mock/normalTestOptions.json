@@ -26,26 +26,10 @@
       "identifier": "first-run",
       "files": [],
       "variables": {
-        "firsttt": 888888,
-        "usil_web": {
-          "sss":{
-            "ddd": "54454",
-            "mdsad": "eee",
-            "sssdd":{
-              "last": "sdfs96",
-              "feeffe": "515s1f5s1f",
-              "popop": "8448",
-              "pipipi":{
-                "pio": "sdfs96",
-                "pie": "515s1f5s1f",
-                "9863": "8448",
-                "newq": ["arr", 555, 9852, { "name": "json" }]
-              }
-            }
-          }
-        },
+        "first": "free",
         "new_variable": 54,
-        "possttt": 8451
+        "post": 8451,
+        "855": "random value"
       }
     }
   ]

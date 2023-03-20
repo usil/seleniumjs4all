@@ -3,55 +3,76 @@ const nodemailer = require('nodemailer');
 function MailService() {
   this.transporter;
 
-  this.initialize = () => {
+  this.initialize = (smtpParams) => {
     if (typeof this.transporter !== 'undefined') {
       return;
     }
 
     const smtpSettings = {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE ?? true,
+      host: smtpParams?.smtpHost,
+      port: smtpParams?.smtpPort,
+      secure: smtpParams?.smtpSecure ?? true,
       tls: {
-        ciphers: process.env.SMTP_TLS_CIPHERS ?? 'SSLv3',
+        ciphers: smtpParams?.smtpTlsCiphers ?? 'SSLv3',
       },
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
+        user: smtpParams?.smtpUser,
+        pass: smtpParams?.smtpPassword,
       },
     };
-
-    if (process.env.SMTP_SECURE) {
-      smtpSettings.secure = JSON.parse(process.env.SMTP_SECURE.toLowerCase());
-    }
-
-    if (process.env.SMTP_TLS_CIPHERS) {
-      smtpSettings.tls.ciphers = process.env.SMTP_TLS_CIPHERS;
-    }
 
     this.transporter = nodemailer.createTransport(smtpSettings);
   };
   /**
    *
-   * @param {Object} params Params to send Mail
+   * @param {Object} params Params to send Mail transmitter
    * @param {string} params.filename filename is a name that report will send
    * @param {string} params.sourcePath sourcePath is a path of file to find and then send
-   * @param {string} params.contentType contentType type of content to send
+   * @param {string} params.suiteIdentifier suite identifier from test
    * @param {string | number} uuid uuid is unique identifier
    * @param {string} status status <failed | passed>
-   * 
+   * @param {Object} smtpParams smtpParams are params to configurate your smtp to send mail
+   * @param {boolean} smtpParams.enableSmtpNotification determines if the email with the report is sent
+   * @param {string} smtpParams.disableMailNotificationOnSuccess determines if the report is sent when the test result is positive
+   * @param {string} smtpParams.smtpHost host of smtp
+   * @param {string} smtpParams.smtpPort port of smtp
+   * @param {string} smtpParams.smtpUser user of smtp
+   * @param {string} smtpParams.smtpPassword password of smtp
+   * @param {string} smtpParams.smtpTlsCiphers 
+   * @param {string} smtpParams.smtpSenderDisplayname alias of smtp
+   * @param {string} smtpParams.smtpRecipients receptors of reports
+   * @param {string} emojiUniCode
+   * @param {string} customEmailSubjectPattern
    * 
    * 
    * 
    * @description Send Mail with the generated report
    * @returns {void}
    */
-  this.sendMail = async (params, uuid, status, body = "") => {
-    this.initialize();
+  this.sendMail = async (params, uuid, status, body = "", smtpParams, emojiUniCode = "", customEmailSubjectPattern = null) => {
+    if (typeof params == 'undefined') {
+      console.log('Error: Params is required to send an email');
+      return;
+    }
+    this.initialize(smtpParams);
+    let fromDefinitive;
+    if (!smtpParams?.smtpSenderDisplayname || smtpParams?.smtpSenderDisplayname?.includes('$')) {
+      fromDefinitive = smtpParams?.smtpUser;
+    } else {
+      fromDefinitive = `${smtpParams?.smtpSenderDisplayname} <${smtpParams?.smtpUser}>`;
+    };
+
+    const subjectVariables = {
+      emojiUnicode: emojiUniCode,
+      status,
+      virtualUserSuiteIdentifier: params?.suiteIdentifier,
+      testExecutionIdentifier: uuid
+    };
+    const customSubject = await this.subjectPatternEvaluator(customEmailSubjectPattern, subjectVariables);
     const mailOptions = {
-      from: process.env.SMTP_FROM_ALIAS ?? process.env.SMTP_USER,
-      to:  process.env.SMTP_TO,
-      subject:  (process.env.SMTP_SUBJECT ?? 'Selenium Reporter') + ": " + uuid + " - status: " + status,
+      from: fromDefinitive,
+      to:  smtpParams?.smtpRecipients,
+      subject: customSubject,
       html: "<p>" + body + "</p>",
       attachments: [
         {
@@ -61,16 +82,8 @@ function MailService() {
         }
       ]
     }
-    if (typeof params == 'undefined') {
-      console.log('Error: Params is required to send an email');
-      return;
-    }
     if (typeof mailOptions.to == 'undefined') {
-      console.log('Error: SMTP_TO is required to send an email');
-      return;
-    }
-    if (typeof mailOptions.subject == 'undefined') {
-      console.log('Error: SMTP_SUBJECT is required to send an email');
+      console.log('Error: SMTP_RECIPIENTS is required to send an email');
       return;
     }
     if (typeof mailOptions.attachments == 'undefined' || mailOptions.attachments.length < 1) {
@@ -86,6 +99,47 @@ function MailService() {
       console.log(error);
     }
   };
+
+  /**
+   *
+   * @param {string} stringPattern stringPattern is a pattern to send the report by mail, more information in the documentation
+   * @param {Object} variables variables to configurate the subject of Mail
+   * @param {string} variables.emojiUnicode is a emoji in format unicode
+   * @param {string} variables.virtualUserSuiteIdentifier virtualUserSuiteIdentifier identifier from test
+   * @param {string} variables.testExecutionIdentifier testExecutionIdentifier is a randomly generated id
+   * @param {string} variables.status status <failed | passed>
+   * 
+   * 
+   * @description It is a function that receives a string pattern and variables that configure the subject according to some rules, more information in the documentation
+   * @returns {string} modified subject
+   */
+
+  this.subjectPatternEvaluator = async (stringPattern, variables) => {
+    if (stringPattern === null || stringPattern.length === 0) {
+      return `${variables.emojiUnicode} Selenium Reporter: #${variables.virtualUserSuiteIdentifier} - ${variables.testExecutionIdentifier} - status: ${variables.status}`
+    }
+    const regex = /\$\{([a-zA-Z\:\_]*)\}/g;
+    const variablesMatches = stringPattern.match(regex) || [];
+    if (variablesMatches.length < 1) {
+      return stringPattern;
+    }    
+    variablesMatches.map(variable => {
+      const variableRegex = /(?<=\$\{)([a-zA-Z\:\_]*)(?=\})/;
+      let pureVariableName = variable.match(variableRegex)[0];
+
+      //verify if variable contains env
+      const indexEnviromentPureVariableName = pureVariableName.search(/(env\:)/);
+
+      if (indexEnviromentPureVariableName > -1 ) {
+        pureVariableName = pureVariableName.replace(/(env\:)/, "");        
+        stringPattern = stringPattern.replace(variable, process.env[pureVariableName])
+      }else {
+        const variableValue = variables[pureVariableName];
+        stringPattern = stringPattern.replace(variable, variableValue);
+      }
+    });
+    return stringPattern;
+  }
 }
 
 module.exports = MailService;

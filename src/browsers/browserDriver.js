@@ -1,6 +1,5 @@
 const chrome = require("selenium-webdriver/chrome");
 const firefox = require("selenium-webdriver/firefox");
-const finder = require('find-package-json');
 const path = require("path");
 const { Builder } = require("selenium-webdriver");
 require("dotenv").config();
@@ -10,13 +9,7 @@ const packPath = require("package-json-path");
 
 const rootPath = path.dirname(packPath(("")));
 
-const browserOptions = require( path.join(rootPath, "browserOptions.json"));
-
-// * Required for headless
-const screenSize = {
-  width: 1080,
-  height: 1080,
-};
+const browserOptions = require(path.join(rootPath, "browserOptions.json"));
 
 const browserDriver = {
   /**
@@ -25,13 +18,28 @@ const browserDriver = {
    * @description Return the driver for chrome
    */
   chrome: async () => {
+    let chromeOptions = new chrome.Options();
+    let optionsKeys;
+    if (browserOptions.options) {
+      optionsKeys = Object.keys(browserOptions.options);
+    }
+    if (optionsKeys?.length > 0) {
+      optionsKeys.map(option => {
+        try {
+          if ( typeof browserOptions.options[option] === "string") {
+            chromeOptions = chromeOptions[option](browserOptions.options[option]);
+          } else if (Array.isArray(browserOptions.options[option])) {
+            chromeOptions = chromeOptions[option](...browserOptions.options[option]);
+          }
+        } catch (error) {
+          console.log("There are error when you try set chrome options, check your browserOptions.json file");
+          console.log(error)
+        }
+      })
+    }
     const driver = await new Builder()
       .forBrowser("chrome")
-      .setChromeOptions(
-        new chrome.Options()
-          .addArguments(...browserOptions.arguments)
-          .windowSize(screenSize)
-      )
+      .setChromeOptions(chromeOptions)
       .build();
     return driver;
   },
@@ -46,7 +54,7 @@ const browserDriver = {
       .setFirefoxOptions(
         new firefox.Options()
           .addArguments(...browserOptions.arguments)
-          .windowSize(screenSize)
+        // .windowSize(screenSize)
       )
       .build();
     return driver;

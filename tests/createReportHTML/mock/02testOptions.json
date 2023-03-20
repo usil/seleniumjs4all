@@ -7,6 +7,18 @@
     "feature",
     "scenario"
   ],
+  "smtp": {
+    "smtpSendReport": "${ENABLE_SMTP_NOTIFICATION}",
+    "smtpHost": "${SMTP_HOST}",
+    "smtpPort": "${SMTP_PORT}",
+    "smtpUser": "${SMTP_USER}",
+    "smtpPassword": "${SMTP_PASSWORD}",
+    "smtpSecure": "${SMTP_SECURE}",
+    "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
+    "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
+    "smtpRecipients": "${SMTP_RECIPIENTS}",
+    "smtpSubject": "${SMTP_SUBJECT}"
+  },
   "virtualUserSuites": [
     {
       "skip": false,

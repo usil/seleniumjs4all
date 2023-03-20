@@ -86,6 +86,18 @@ Example in `testOptions.json` file
   "reportWeb":true,
   "reportMode": "staticDeep",
   "columnNames": ["enterprise", "feature", "scenario"],
+  "smtp": {
+    "enableSmtpNotification": "${ENABLE_SMTP_NOTIFICATION}",
+    "disableMailNotificationOnSuccess": "${DISABLE_MAIL_NOTIFICATION_ON_SUCCESS}",
+    "smtpHost": "${SMTP_HOST}",
+    "smtpPort": "${SMTP_PORT}",
+    "smtpUser": "${SMTP_USER}",
+    "smtpPassword": "${SMTP_PASSWORD}",
+    "smtpSecure": "${SMTP_SECURE}",
+    "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
+    "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
+    "smtpRecipients": "${SMTP_RECIPIENTS}"
+  },
   "virtualUserSuites": [
     {
       "skip": false,
@@ -151,30 +163,37 @@ By default this framework only prints 3 columns. If you need to have more column
 
 | Variable                             | Description                                    | Default Value |
 | ------------------------------------ | ---------------------------------------------- | ------------- |
-| SEND_REPORT                  | If you want to send mail with report, this variable should be equals to <b>send</b>               |           |
+| ENABLE_SMTP_NOTIFICATION                  | If you want to send mail with report, this variable should be equals to <b>true</b>               |           |
+| DISABLE_MAIL_NOTIFICATION_ON_SUCCESS                  | If the test result is successful and this parameter is equal to <b>true</b>, the report will not be mailed.               |           |
 | SMTP_HOST                   | Sender identifier               |           |
 | SMTP_PORT                   | Communication endpoint that defines the routing of email transactions               |           |
 | SMTP_USER                   | User of your mail server               |            |
 | SMTP_PASSWORD                   | Password of your mail server               |           |
 | SMTP_SECURE                   | Encrypt. <br> If your host is for gmail, your value should be true. <br> If your host is for office 365, your value should be false               | true           |
 | SMTP_TLS_CIPHERS                   | Are algorithms that help secure network connections that use Transport Layer Security               |    SSLv3        |
-| SMTP_FROM_ALIAS                   | Should be able equal to the value of SMTP_USER           |            |
-| SMTP_TO                   | Recipient report for mail           |            |
-| SMTP_SUBJECT                  | Subject of mail           |   Selenium Reporter         |
+| SMTP_SENDER_DISPLAYNAME                   | It is the alias of the transmitter           |            |
+| SMTP_RECIPIENTS                   | Recipient report for mail, It can be multiple and separated by  '', ''            |            |
+
 
 ***Example***
 
 ```bash
-export SEND_REPORT=send
+export ENABLE_SMTP_NOTIFICATION=true
+export DISABLE_MAIL_NOTIFICATION_ON_SUCCESS=false
 export SMTP_HOST=smtp.chageme.com
 export SMTP_PORT=465
 export SMTP_USER=changeme@server
 export SMTP_PASSWORD=changeme
 export SMTP_SECURE=true
 export SMTP_TLS_CIPHERS=SSLv3
-export SMTP_TO=recipient@server
-export SMTP_SUBJECT="Selenium Report"
+export SMTP_RECIPIENTS=recipient@server
 ```
+
+## Custom subject on report by mail
+
+This is a framework feature to customize the subject of the emailed report. More information in the next link https://github.com/usil/seleniumjs4all/wiki/Send-report-by-mail#custom-subject-on-report-by-mail
+
+<br>
 
 ## Contributors
 

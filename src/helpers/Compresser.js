@@ -22,6 +22,7 @@ class Compresser {
             archive.pipe(output);
             archive.directory(sourcePath, false);  
             archive.finalize();
+            return true;
         } catch (error) {
             console.log(error)
             throw err;
