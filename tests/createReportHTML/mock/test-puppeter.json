@@ -1,0 +1,147 @@
+{
+  "files": [],
+  "virtualUserMultiplier": 1,
+  "reportWeb": true,
+  "reportMode": "dynamicDeep",
+  "columnNames": [
+    "enterprisess",
+    "prueba",
+    "scenario"
+   ],
+   "smtp": {
+    "smtpSendReport": "${ENABLE_SMTP_NOTIFICATION}",
+    "smtpHost": "${SMTP_HOST}",
+    "smtpPort": "${SMTP_PORT}",
+    "smtpUser": "${SMTP_USER}",
+    "smtpPassword": "${SMTP_PASSWORD}",
+    "smtpSecure": "${SMTP_SECURE}",
+    "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
+    "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
+    "smtpRecipients": "${SMTP_RECIPIENTS}",
+    "smtpSubject": "${SMTP_SUBJECT}"
+  },
+  "virtualUserSuites": [
+    {
+      "skip": false,
+      "identifier": "test-pup",
+      "files": [],
+      "variables": {
+        "usil_web": {
+          "url": "https://usil.edu.pe",
+          "expect_about": "ABOUT US",
+          "expect_map": "MAJORS AND PROGRAMS",
+          "expect_research": "RESEARCH",
+          "expect_international": "INTERNATIONAL",
+          "expect_admssion": "ADMISSION",
+          "expect_slider_load": 1,
+          "expect_slider_img_exists": true,
+          "usil_search": "USIL",
+          "expect_search": 1
+        },
+        "usil_blog": {
+          "url": "https://blogs.usil.edu.pe/",
+          "text_search": "Alemania busca reconocer y premiar Starups peruanas",
+          "expect_load_featured_post": 1,
+          "expect_load_latest_posts": 1,
+          "expect_content_our_blog": 1,
+          "expect_latest_posts_web": "https://blogs.usil.edu.pe/archivo",
+          "expect_latest_posts_web_content": 1,
+          "expect_page_information": "Selecciona el área de tu consulta:"
+        },
+        "usil_usilonlife": {
+          "url": "https://usilonlife.com/",
+          "notfound_jumbotron_vimeo": "Lo sentimos",
+          "class_search": "ocultar",
+          "url_manifiesto": "https://usilonlife.com/manifiesto-usil-onlife/",
+          "title_manifiesto": "Manifiesto USIL Onlife",
+          "content_slider_teacher": 1,
+          "content_slider_testimonials": 1
+        },
+        "spu_usil": {
+          "url": "https://spu.usil.edu.pe/",
+          "footer": "SPU - SISTEMA DE PROGRESIÓN UNIVERSITARIA ©2022. Todos los Derechos Reservados",
+          "expect_spu_ov": "TU CARRERA PROFESIONAL",
+          "expect_spu_mi": "SISTEMA DE AUTOEVALUACIÓN",
+          "expect_spu_ad": "DNI",
+          "expect_spu_ch": "NUESTRO OBJETIVO: QUE GANES O GANES",
+          "expect_spu_re": "NUESTRAS CHARLAS Y CURSOS",
+          "expect_spu_pa": "DNI"
+        },
+        "usil_cie": {
+          "url": "https://charlas.institutoemprendedores.pe/",
+          "expect_subtitle": "¡ELEGIR TU FUTURO NUNCA FUE TAN FÁCIL!",
+          "expect_inp_dni_placeholder": "DNI"
+        },
+        "usil_examen_ie": {
+          "url": "https://examen.institutoemprendedores.pe/",
+          "form_placeholder": "Correo donde recibirás la información"
+        },
+        "usil_talleres_ie": {
+          "url": "https://talleres.institutoemprendedores.pe/",
+          "form_email_placeholder": "Ingresa tu correo",
+          "whatsapp_contact_number": "981-247-888"
+        },
+        "usil_cpel": {
+          "url": "cpel.usil.edu.pe",
+          "url_redirect": "https://usil.edu.pe/cpel",
+          "expect_propuesta_educativa": "https://usil.edu.pe/cpel/propuesta-educativa",
+          "expect_postula_aqui": "https://usil.edu.pe/cpel/inscribete"
+        },
+        "sir_edu": {
+          "url": "https://www.sir.edu.pe/",
+          "title_testimonios": "TESTIMONIOS",
+          "title_agendar_cita": "AGENDA UNA REUNIÓN",
+          "fe_usuario_placeholder": " Ingrese su documento"
+        },
+        "panel_digital": {
+          "url": "https://paneldigital.usil.edu.pe",
+          "error_message_credentials": "Usuario o contraseña incorrectos."
+        },
+        "siu": {
+          "url": "https://news.sanignaciouniversity.edu/",
+          "url_redirect": "https://www.sanignaciouniversity.edu/",
+          "news_section_title": "News"
+        },
+        "infosil": {
+          "url": "https://infosil.usil.edu.pe/login",
+          "login_error_message": "Datos incorrectos"
+        },
+        "sistema_erp": {
+          "url": "https://erp.usil.edu.pe",
+          "login_error_message": "Usuario No existe..."
+        },
+        "campus_ie": {
+          "url": "https://iecampus.institutoemprendedores.pe"
+        },
+        "campus_virtual_siu": {
+          "url": "https://vc.sanignaciouniversity.edu"
+        },
+        "sistema_intrasir": {
+          "url": "https://sir.sieweb.com.pe/sistema/login/"
+        },
+        "sistema_exam": {
+          "url": "https://exam.usil.edu.pe/Home/LoginGo"
+        },
+        "usil_instructure": {
+          "url": "https://usil.instructure.com/"
+        },
+        "siu_instructure": {
+          "url": "https://sanignaciouniversity.instructure.com/"
+        },
+        "ie_instructure": {
+          "url": "https://institutodeemprendedores.instructure.com/"
+        },
+        "usil_cev": {
+          "url": "https://usilparatodos.usil.edu.pe/"
+        },
+        "descubre_usil": {
+          "pregado_url": "https://descubre.usil.edu.pe/pregrado/",
+          "que_estudiar_url": "https://descubre.usil.edu.pe/que-estudiar/",
+          "form_title": "REGÍSTRATE AQUÍ",
+          "tu_mejor_version_url": "https://descubre.usil.edu.pe/cpel/tu-mejor-version/",
+          "footer_correo": "admisioncpel@usil.edu.pe"
+        }
+      }
+    }
+  ]
+}

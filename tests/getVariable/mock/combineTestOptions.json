@@ -1,0 +1,49 @@
+{
+  "files": [],
+  "virtualUserMultiplier": 1,
+  "reportWeb": true,
+  "reportMode": "dynamicDeep",
+  "columnNames": [
+    "enterprise",
+    "feature",
+    "scenario"
+  ],
+  "smtp": {
+    "smtpSendReport": "${ENABLE_SMTP_NOTIFICATION}",
+    "smtpHost": "${SMTP_HOST}",
+    "smtpPort": "${SMTP_PORT}",
+    "smtpUser": "${SMTP_USER}",
+    "smtpPassword": "${SMTP_PASSWORD}",
+    "smtpSecure": "${SMTP_SECURE}",
+    "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
+    "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
+    "smtpRecipients": "${SMTP_RECIPIENTS}",
+    "smtpSubject": "${SMTP_SUBJECT}"
+  },
+  "virtualUserSuites": [
+    {
+      "skip": false,
+      "identifier": "first-run",
+      "files": [],
+      "variables": {
+        "first": 888888,
+        "new_variable": 54,
+        "post": 8451,
+        "web": {
+          "level_2":{
+            "random_1": "54454",
+            "random_2": "eee",
+            "level_3":{
+              "last": "sdfs96",
+              "random_3": "515s1f5s1f",
+              "level_4":{
+                "pio": "sdfs96",
+                "pie": "random text"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

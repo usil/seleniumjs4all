@@ -1,0 +1,330 @@
+<html>
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <title>#report_name</title>
+  <style type="text/css">
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+      /* width: 25%; */
+    }
+
+    .test-result-table {
+      border: 1px solid black;
+      width: 800px;
+    }
+
+    .test-result-table-header-cell {
+      border-bottom: 1px solid black;
+      background-color: silver;
+    }
+
+    .test-result-step-command-cell {
+      border-bottom: 1px solid gray;
+    }
+
+    .test-result-step-description-cell {
+      border-bottom: 1px solid gray;
+    }
+
+    .test-result-step-result-cell-ok {
+      border-bottom: 1px solid gray;
+      background-color: green;
+    }
+
+    .test-result-step-result-cell-failure {
+      border-bottom: 1px solid gray;
+      background-color: red;
+    }
+
+    .test-result-step-result-cell-notperformed {
+      border-bottom: 1px solid gray;
+      background-color: white;
+    }
+
+    .test-result-describe-cell {
+      background-color: tan;
+      font-style: italic;
+    }
+
+    .test-cast-status-box-ok {
+      border: 1px solid black;
+      float: left;
+      margin-right: 10px;
+      width: 45px;
+      height: 25px;
+      background-color: green;
+    }
+
+    .error {
+      width: 100%;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+      background: #202020;
+      font-size: 11px;
+      font-family: Courier;
+      color: #DFDFDF;
+    }
+
+    .error pre {
+      white-space: pre-wrap;
+      /* Since CSS 2.1 */
+      white-space: -moz-pre-wrap;
+      /* Mozilla, since 1999 */
+      white-space: -pre-wrap;
+      /* Opera 4-6 */
+      white-space: -o-pre-wrap;
+      /* Opera 7 */
+      word-wrap: break-word;
+      /* Internet Explorer 5.5+ */
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    .container {
+      width: 25%;
+      margin: 15px auto;
+    }
+
+    .chart-container {
+      text-align: center;
+      width: 25%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 989px) {
+      .chart-container {
+        width: 50%;
+      }
+    }
+  </style>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0-rc.1/Chart.js"></script>
+  <script type="text/javascript">
+    var report = #data_report;
+    var columnsName = #columns_name;
+  </script>
+
+</head>
+
+<body>
+
+  <div class="container" style="text-align: center; width: 50%;">
+
+    <h3 id="reportName">#report_name</h3>
+
+      <h4 style="text-align: center" id="date"></h4>
+      <h4 id="reportDuration">#report_duration</h4>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="myChart"></canvas>
+  </div>
+
+
+  <br>
+  <br>
+  <table id="table" cellspacing="0">
+    <thead>
+      <tr>
+        <!-- <td class="test-result-table-header-cell">TestCase</td>
+          'td' for columns
+        <td class="test-result-table-header-cell">Status</td> -->
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+  <script type="text/javascript">
+    function dataAdapter(reportDataJSON) {
+
+      let dataForReport = {};
+
+      dataForReport.passed = reportDataJSON.numPassedTests;
+      dataForReport.report_name = reportDataJSON.report_name;
+      dataForReport.failed = reportDataJSON.numFailedTests;
+      dataForReport.total = reportDataJSON.numTotalTests;
+      dataForReport.date = reportDataJSON.date;
+      dataForReport.duration = reportDataJSON.duration;
+
+      let reportRows = []
+      for (const data of reportDataJSON.columnsData) {
+
+        let row = {};
+        let columnData = []
+
+        data.map((value, index) => {
+          if (index === 0)
+            row.name = value
+
+          if (index === 2)
+            row.name = value
+
+          if (index === 3)
+            row.status = value
+
+          if (index === 4)
+            row.errorLog = value
+
+          if (index === 0 || index === 1 || index === 2)
+            columnData.push(value)
+        })
+        row = { ...row, columnData }
+
+        reportRows = [...reportRows, row]
+      }
+
+      dataForReport.reportRows = reportRows;
+
+      return dataForReport
+    }
+
+    function main(data) {
+      data = dataAdapter(data)
+
+      var table = document.getElementById("table").getElementsByTagName('tbody')[0];
+
+      let columns_header = `<th class="test-result-table-header-cell" style='width:25px;'>#</th>`;
+      columnsName.map(name => {
+        columns_header += `<th class="test-result-table-header-cell">${name}</th>`
+      })
+      columns_header += `<th class="test-result-table-header-cell">Status</th>`;
+
+      document.querySelector('#table thead tr').innerHTML = columns_header;
+
+      document.title = data.report_name;
+      document.getElementById("reportName").innerHTML = data.report_name;
+      document.getElementById("date").innerHTML = data.date;
+      document.getElementById("reportDuration").innerHTML = `Test duration: ${data.duration}`;
+
+      data.reportRows.forEach(function (scenarioStat, i) {
+
+        var row = table.insertRow();
+        row.id = i;
+
+        let cell0 = row.insertCell(0);
+        cell0.className = 'test-result-step-command-cell';
+        cell0.innerHTML = i + 1;
+
+        scenarioStat.columnData.forEach((element, i) => {
+          let cell = row.insertCell(i + 1);
+          cell.className = 'test-result-step-command-cell';
+          cell.innerHTML = element;
+        });
+
+        let cell4 = row.insertCell(4);
+        cell4.innerHTML = scenarioStat.status;
+
+        if (scenarioStat.status === 'passed') {
+          cell4.className = 'test-result-step-result-cell-ok';
+        } else {
+          row.className = 'clickable';
+          cell4.className = 'test-result-step-result-cell-failure';
+
+          let error_log;
+          if (scenarioStat.errorLog) {
+            error_log = scenarioStat.errorLog;
+          } else {
+            error_log = "Error log was not found.";
+          }
+          createErrorRow(table, `error_${i}`, error_log);
+
+          row.onclick = function () {
+            var rowId = this.id;
+            if (document.getElementById(`error_${rowId}`)) {
+              var currentDisplay = document.getElementById(`error_${rowId}`).style.display;
+              document.getElementById(`error_${rowId}`).style.display = (currentDisplay === 'none' ? "" : "none");
+            }
+          };
+
+        }
+      });
+    }
+
+    function showChart(data) {
+      var total = data.total;
+      var passed = (data.passed > 0 ? Math.round((data.passed * 100) / total) : 0);
+      var pending = (data.pending > 0 ? Math.round((data.pending * 100) / total) : 0);
+      var failed = (data.failed > 0 ? Math.round((data.failed * 100) / total) : 0);
+
+      var ctx = document.getElementById("myChart").getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [`Passed ${passed} %`, `Failed ${failed} %`, `Pending ${pending} %`],
+          datasets: [{
+            backgroundColor: [
+              "#2ecc71",
+              "#ff2c2c",
+              "#95a5a6"
+            ],
+            data: [passed, failed, pending]
+          }]
+        }
+      });
+    }
+
+    function createErrorRow(table, rowId, arrayError) {
+      let errorRow = table.insertRow();
+      errorRow.id = rowId;
+      errorRow.style = "display:none"
+
+      let errorCell = errorRow.insertCell();
+      errorCell.setAttribute("colspan", 5);
+      errorCell.className = 'error'
+
+      let errors_container = document.createElement("div");
+
+      arrayError.map(el => {
+        let error_container = document.createElement("div");
+
+        let pre = document.createElement("pre");
+        pre.textContent = el.error_log;
+
+        let a = document.createElement("a")
+        a.href = el.screenshot;
+        a.innerHTML = 'Screenshot error';
+        a.target = '_blank'
+        a.style.color = '#FFF';
+
+        // let img = document.createElement("img");
+        // img.src = el.screenshot;
+        // img.alt = 'screenshot_error';
+
+        let hr = document.createElement("hr");
+
+        // a.appendChild(img)
+        error_container.appendChild(pre);
+        error_container.appendChild(a);
+        error_container.appendChild(hr)
+
+        errors_container.appendChild(error_container)
+      })
+
+      errorCell.appendChild(errors_container)
+    }
+
+
+    main(report);
+    showChart(report);
+  </script>
+
+</body>
+
+</html>
