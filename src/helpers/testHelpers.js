@@ -676,6 +676,34 @@ const createTable = async (suiteIdentifier, virtualUser, testUuid, rootPath, col
   return table;
 };
 
+/**
+ * 
+ * @param {Error} error
+ * @param {String} data 
+ * @param {String} fileName 
+ */
+function readingFile(error, data, fileName)
+{
+	if(error){
+		console.log(error);
+	} else {	
+		fs.writeFile(fileName, data, 'utf8', () => writeFile(error, fileName));
+	}
+}
+/**
+ * 
+ * @param {Error} error 
+ * @param {String} fileName 
+ */
+function writeFile(error, fileName)
+{
+	if(error){
+		console.log(error)
+	} else {
+		console.log(`Content has been pasted to ${fileName} file`);
+	}
+}
+
 module.exports = {
   formatVarsEnv,
   getVariable,
@@ -683,5 +711,7 @@ module.exports = {
   takeScreenshot,
   createReportHTML,
   createTable,
-  fileExists
+  fileExists,
+  readingFile,
+  writeFile
 }
