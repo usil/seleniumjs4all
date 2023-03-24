@@ -93,46 +93,45 @@ const formatVarsEnv = (vars, pre_name = "", vars_to_env = {}) => {
   return vars_to_env;
 }
 
-const formatVarsEnvOriginal = (vars) => {
-  let vars_to_env = {};
+// const formatVarsEnvOriginal = (vars) => {
+//   let vars_to_env = {};
 
-  for (const propertyObject in vars) {
-    //key , value
-    console.log(propertyObject, "-+", vars[propertyObject].length, typeof vars[propertyObject], "+-");
-    /**
-     * If the property does not have an object assigned, the property and its 
-     * value are used for the vars_to_env
-     */
-    if (vars[propertyObject].length > 0) {
-      let new_var = `
-        {"${propertyObject}":"${vars[propertyObject]}"}
-      `;
+//   for (const propertyObject in vars) {
+//     console.log(propertyObject, "-+", vars[propertyObject].length, typeof vars[propertyObject], "+-");
+//     /**
+//      * If the property does not have an object assigned, the property and its 
+//      * value are used for the vars_to_env
+//      */
+//     if (vars[propertyObject].length > 0) {
+//       let new_var = `
+//         {"${propertyObject}":"${vars[propertyObject]}"}
+//       `;
 
-      new_var = JSON.parse(new_var)
+//       new_var = JSON.parse(new_var)
 
-      vars_to_env = { ...vars_to_env, ...new_var }
-    }
+//       vars_to_env = { ...vars_to_env, ...new_var }
+//     }
 
-    /**
-     * If the property has an object assigned, the assigned object is iterated 
-     * and the initial property is contacted with that of the contained object 
-     * and assigning its value to this new property to add it to vars_to_env
-     */
-    else {
-      for (const propertyValue in vars[propertyObject]) {
-        let new_var = `
-          {"${propertyObject}___${propertyValue}":"${vars[propertyObject][propertyValue]}"}
-        `;
+//     /**
+//      * If the property has an object assigned, the assigned object is iterated 
+//      * and the initial property is contacted with that of the contained object 
+//      * and assigning its value to this new property to add it to vars_to_env
+//      */
+//     else {
+//       for (const propertyValue in vars[propertyObject]) {
+//         let new_var = `
+//           {"${propertyObject}___${propertyValue}":"${vars[propertyObject][propertyValue]}"}
+//         `;
 
-        new_var = JSON.parse(new_var)
+//         new_var = JSON.parse(new_var)
 
-        vars_to_env = { ...vars_to_env, ...new_var }
-      }
-    }
-  }
+//         vars_to_env = { ...vars_to_env, ...new_var }
+//       }
+//     }
+//   }
 
-  return vars_to_env;
-}
+//   return vars_to_env;
+// }
 
 /**
  * 
