@@ -1,10 +1,11 @@
 {
   "name": "selenium4all",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "src/index.js",
   "bin": {
-    "selenium4all": "./src/index.js"
+    "selenium4all": "./src/index.js",
+    "selenium4all-generate-files": "./src/lib/generateRequiredFiles/index.js"
   },
   "scripts": {
     "dev": "node .",
@@ -27,7 +28,8 @@
     ],
     "collectCoverageFrom": [
       "src/**/*.js"
-    ]
+    ],
+    "testTimeout": 15000
   },
   "keywords": [
     "selenium",

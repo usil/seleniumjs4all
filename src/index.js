@@ -13,6 +13,7 @@ const { formatVarsEnv, createReportHTML, createTable } = require("./helpers/test
 const path = require("path");
 const exec = util.promisify(require("child_process").exec);
 const packPath = require("package-json-path");
+const fs = require("fs");
 const envSettings = new EnvSettings();
 const compresser = new Compresser()
 const mailer = new Mailer();
@@ -90,6 +91,7 @@ const main = () => {
         varToEnv.EXECUTION_SUITE = index;
 
         let resolveSourcePath = path.join( rootPath, 'report/', varToEnv.TEST_UUID );
+        let indexResolvePath = path.resolve(rootPath, 'report', varToEnv.TEST_UUID, varToEnv.EXECUTION_SUITE.toString(), "index.html");
         const params = {
           filename: varToEnv.TEST_UUID,
           sourcePath: resolveSourcePath + '.zip',
@@ -111,10 +113,12 @@ const main = () => {
             const tableCreated = await createTable(suiteIdentifier, varToEnv.EXECUTION_SUITE, varToEnv.TEST_UUID, rootPath, columnNames, reportMode);
             console.info(tableCreated.toString() + "\n"); //* Prints the table
             createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
-            .then( () => {
+            .then( async () => {
               if (smtpParams?.enableSmtpNotification == true && smtpParams?.disableMailNotificationOnSuccess != true) {
                 compresser.run(resolveSourcePath, resolveSourcePath);
-                mailer.sendMail(params, varToEnv.TEST_UUID, "Success", "No errors detected in tests for " +  `<b>${suiteIdentifier}.</b>`, smtpParams, "\u{1f600}", smtpParams?.customEmailSubjectPattern ?? null);
+                let titleBody ="<p> No errors detected in tests for " +  `<b>${suiteIdentifier}.</b> <p>\n`;
+                const bodyHtmlReport = await mailer.createTableHtmlToReportMailer(indexResolvePath, titleBody);
+                mailer.sendMail(params, varToEnv.TEST_UUID, "Success", bodyHtmlReport, smtpParams, "\u{1f600}", smtpParams?.customEmailSubjectPattern ?? null);
               }
             });
             }
@@ -127,10 +131,12 @@ const main = () => {
                 const tableCreated = await createTable(suiteIdentifier, index, varToEnv.TEST_UUID, rootPath, columnNames, reportMode);
                 console.info(tableCreated.toString() + "\n"); //* Prints the table
                 createReportHTML(suiteIdentifier, varToEnv.EXECUTION_SUITE, testOptions, varToEnv.TEST_UUID, rootPath)
-                .then(() => {
+                .then(async () => {
                   if (smtpParams?.enableSmtpNotification == true) {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", "Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.`, smtpParams, "\uD83D\uDE21", smtpParams?.customEmailSubjectPattern ?? null);
+                    let titleBody = "<p>Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.</p>\n`;
+                    const bodyHtmlReport = await mailer.createTableHtmlToReportMailer(indexResolvePath, titleBody);
+                    mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", bodyHtmlReport, smtpParams, "\uD83D\uDE21", smtpParams?.customEmailSubjectPattern ?? null);
                   }
                 });
               }

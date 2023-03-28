@@ -1,4 +1,7 @@
+/* istanbul ignore next */
 const nodemailer = require('nodemailer');
+const puppeteer = require('puppeteer');
+
 
 function MailService() {
   this.transporter;
@@ -73,7 +76,7 @@ function MailService() {
       from: fromDefinitive,
       to:  smtpParams?.smtpRecipients,
       subject: customSubject,
-      html: "<p>" + body + "</p>",
+      html:  body,
       attachments: [
         {
             filename: params?.filename + '.zip',
@@ -94,9 +97,11 @@ function MailService() {
     try {
       const info = await this.transporter.sendMail(mailOptions);
       console.log('Email sent:' + info.response);
+      return info;
     } catch (error) {
       console.log('Error while send message on error for mail');
       console.log(error);
+      return error;
     }
   };
 
@@ -139,6 +144,36 @@ function MailService() {
       }
     });
     return stringPattern;
+  },
+  this.createTableHtmlToReportMailer = async (resourceHtmlPath, titleBody) => {
+
+    if (!resourceHtmlPath) {
+      return "";
+    }
+    const browser = await puppeteer.launch({ 
+      headless: true,
+      args: [
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+          '--no-first-run',
+          '--no-sandbox',
+          '--no-zygote',
+          '--deterministic-fetch',
+          '--disable-features=IsolateOrigins',
+          '--disable-site-isolation-trials',
+      ]
+    });
+    const page = await browser.newPage();
+    await page.goto("file:///" + resourceHtmlPath);
+    const tableElement = await page.$('#table');
+    let customStyle = "<style> table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; } td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; /* width: 25%; */ } .test-result-table { border: 1px solid black; width: 800px; } .test-result-table-header-cell { border-bottom: 1px solid black; background-color: silver; } .test-result-step-command-cell { border-bottom: 1px solid gray; } .test-result-step-description-cell { border-bottom: 1px solid gray; } .test-result-step-result-cell-ok { border-bottom: 1px solid gray; background-color: green; } .test-result-step-result-cell-failure { border-bottom: 1px solid gray; background-color: red; } .test-result-step-result-cell-notperformed { border-bottom: 1px solid gray; background-color: white; } .test-result-describe-cell { background-color: tan; font-style: italic; } .test-cast-status-box-ok { border: 1px solid black; float: left; margin-right: 10px; width: 45px; height: 25px; background-color: green; } .error { width: 100%; height: 100%; top: 0px; left: 0px; background: #202020; font-size: 11px; font-family: Courier; color: #DFDFDF; } .error pre { white-space: pre-wrap; /* Since CSS 2.1 */ white-space: -moz-pre-wrap; /* Mozilla, since 1999 */ white-space: -pre-wrap; /* Opera 4-6 */ white-space: -o-pre-wrap; /* Opera 7 */ word-wrap: break-word; /* Internet Explorer 5.5+ */ } .clickable { cursor: pointer; } .container { width: 25%; margin: 15px auto; } </style>"
+    let bodyHtmlReport =customStyle + titleBody + `\n`;
+    /* istanbul ignore next */
+    const tableHtml = await page.evaluate(el => el.innerHTML, tableElement);
+    bodyHtmlReport = bodyHtmlReport.concat(" <table>" + tableHtml + "</table>")
+    await browser.close();
+    return bodyHtmlReport;
   }
 }
 
