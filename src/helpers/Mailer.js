@@ -97,9 +97,11 @@ function MailService() {
     try {
       const info = await this.transporter.sendMail(mailOptions);
       console.log('Email sent:' + info.response);
+      return info;
     } catch (error) {
       console.log('Error while send message on error for mail');
       console.log(error);
+      return error;
     }
   };
 

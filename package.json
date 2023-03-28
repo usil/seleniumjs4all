@@ -28,7 +28,8 @@
     ],
     "collectCoverageFrom": [
       "src/**/*.js"
-    ]
+    ],
+    "testTimeout": 15000
   },
   "keywords": [
     "selenium",
