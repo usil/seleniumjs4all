@@ -134,7 +134,7 @@ const main = () => {
                 .then(async () => {
                   if (smtpParams?.enableSmtpNotification == true) {
                     compresser.run(resolveSourcePath, resolveSourcePath);
-                    let titleBody = "Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.`;
+                    let titleBody = "<p>Errors have been detected in at least one test for " + `<b>${suiteIdentifier}.</b> Review the attached html report by opening it in your preferred browser.</p>\n`;
                     const bodyHtmlReport = await mailer.createTableHtmlToReportMailer(indexResolvePath, titleBody);
                     mailer.sendMail(params, varToEnv.TEST_UUID, "Failed", bodyHtmlReport, smtpParams, "\uD83D\uDE21", smtpParams?.customEmailSubjectPattern ?? null);
                   }
