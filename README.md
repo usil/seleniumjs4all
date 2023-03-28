@@ -6,9 +6,7 @@
 <img src="./badges/badge-statements.svg"> -->
 
 
-| ![](./badges/badge-branches.svg) | ![](./badges/badge-functions.svg) | ![](./badges/badge-lines.svg) | ![](./badges/badge-statements.svg) | 
-
-|--|--|--|--|
+![](./badges/badge-branches.svg) ![](./badges/badge-functions.svg) ![](./badges/badge-lines.svg) ![](./badges/badge-statements.svg)
 
 
 
