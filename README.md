@@ -1,9 +1,17 @@
 # seleniumjs4all
 
-<img src="./badges/badge-branches.svg">
+<!-- <img src="./badges/badge-branches.svg">
 <img src="./badges/badge-functions.svg">
 <img src="./badges/badge-lines.svg">
-<img src="./badges/badge-statements.svg">
+<img src="./badges/badge-statements.svg"> -->
+
+
+| ![](./badges/badge-branches.svg) | ![](./badges/badge-functions.svg) | ![](./badges/badge-lines.svg) | ![](./badges/badge-statements.svg) | 
+
+|--|--|--|--|
+
+
+
 
 ## Description
 
