@@ -9,7 +9,7 @@ const { EnvSettings } = require("advanced-settings");
 const util = require("util");
 const Compresser = require ('./helpers/Compresser');
 const Mailer = require ('./helpers/Mailer');
-const { formatVarsEnv, createReportHTML, createTable } = require("./helpers/testHelpers");
+const { formatVarsEnv, createReportHTML, createTable, getAllFilesFromDirectory, filterArrayByRegex } = require("./helpers/testHelpers");
 const path = require("path");
 const exec = util.promisify(require("child_process").exec);
 const packPath = require("package-json-path");
@@ -24,6 +24,7 @@ const testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptio
 const columnNames = testOptions.columnNames;
 const reportMode = testOptions.reportMode;
 const smtpParams = testOptions.smtp;
+
 
 /**
  * @description app entrypoint
@@ -44,18 +45,58 @@ const main = () => {
         console.info(
           `#${index} Starting test in ${suiteIdentifier} suite`.bgMagenta
         );
+        if (
+          (testOptions.filterByTestName && testOptions.filterByRegexTestName) || 
+          (suite.filterByTestName && testOptions.filterByRegexTestName) ||
+          (suite.filterByRegexTestName && testOptions.filterByTestName) ||
+          (suite.filterByRegexTestName && suite.filterByTestName) || 
+          (process.env.FILTER_BY_REGEX_TEST_NAME && testOptions.filterByTestName) ||
+          (process.env.FILTER_BY_REGEX_TEST_NAME && suite.filterByTestName) || 
+          (process.env.FILTER_BY_REGEX_TEST_NAME && process.env.FILTERED_FILES) || 
+          (process.env.FILTERED_FILES && testOptions.filterByRegexTestName) ||
+          (process.env.FILTERED_FILES && suite.filterByRegexTestName)
 
-        const environmentTestFiles = process.env.FILTERED_FILES
-          ? process.env.FILTERED_FILES.toString().split(" ")
-          : [];
-        const suiteTestFiles = suite.files || [];
-        const globalTestFiles = testOptions.files || [];
-        const testFiles =
-          environmentTestFiles.length > 0
-            ? environmentTestFiles
-            : suiteTestFiles.length > 0
-              ? suiteTestFiles
-              : globalTestFiles;
+        )  {
+          console.log("Error: filterByTestName and filterByRegexTestName are mutually exclusive")
+          return "";
+        }
+
+        let testFiles = [];
+        if (testOptions.filterByTestName || suite.filterByTestName || process.env.FILTERED_FILES) {
+          console.log("\n", "¡Filter by test name active!", "\n")
+          const environmentTestFiles = process.env.FILTERED_FILES
+            ? process.env.FILTERED_FILES.toString().split(" ")
+            : [];
+          const suiteTestFiles = suite.filterByTestName || [];
+          const globalTestFiles = testOptions.filterByTestName || [];
+          testFiles =
+            environmentTestFiles.length > 0
+              ? environmentTestFiles
+              : suiteTestFiles.length > 0
+                ? suiteTestFiles
+                : globalTestFiles;
+        } else if (testOptions.filterByRegexTestName || suite.filterByRegexTestName || process.env.FILTER_BY_REGEX_TEST_NAME) {
+            console.log("\n", "¡Filter by regex test name active!", "\n")
+            const environmentFilterFilesByRegex = process.env.FILTER_BY_REGEX_TEST_NAME
+              ? process.env.FILTER_BY_REGEX_TEST_NAME.toString().split(" ")
+              : [];
+            const suiteFilterByRegexTestName = suite.filterByRegexTestName || [];
+            const globalFilterByRegexTestName = testOptions.filterByRegexTestName || [];
+            const finalFilterRegex = environmentFilterFilesByRegex.length > 0
+            ? environmentFilterFilesByRegex
+            : suiteFilterByRegexTestName.length > 0
+              ? suiteFilterByRegexTestName
+              : globalFilterByRegexTestName;
+            const testsDirectoryPath = path.join(rootPath, "tests");
+            
+            const allFilesToTest = getAllFilesFromDirectory(testsDirectoryPath, ".test.js") || [];
+            
+            testFiles = filterArrayByRegex(allFilesToTest, finalFilterRegex);
+
+            if (testFiles.length < 1) {
+              console.log("No test files matching with ", finalFilterRegex)
+            }
+          }
         
         // exclude files for tests
         const environmentExcludeTestFiles = process.env.EXCLUDE_FILES
@@ -71,8 +112,8 @@ const main = () => {
               : globalExcludeTestFiles;
 
 
-        console.log(testFiles.join(" "), "- files");
-        console.log(exclueTestFiles.join(" "), "- files excludes");
+        console.log(testFiles.join(" "), "- testing files...");
+        console.log(exclueTestFiles.join(" "), "- testing files excludes");
 
         // Format variables for environment variables
         let varToEnv = formatVarsEnv(suite.variables)

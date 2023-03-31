@@ -80,7 +80,6 @@ describe('Subject pattern evaluator', () => {
         }
         const result = `Result Selenium #${process.env[nameEnviromentTest]}-----${variables.status}`;
         const fnResult = await mailer.subjectPatternEvaluator(stringPattern, variables);
-        console.log(fnResult, "-----");
         expect(result).toBe(fnResult);
     });
     test('Should return the correct subject if send enviroment variables, strings and normal variables', async () => {
@@ -97,7 +96,6 @@ describe('Subject pattern evaluator', () => {
         }
         const result = `Result ${variables.emojiUnicode} Selenium #custom_value-----${variables.status}  custom value camel STRING PART ${variables.testExecutionIdentifier}`;
         const fnResult = await mailer.subjectPatternEvaluator(stringPattern, variables);
-        console.log(fnResult, "-----");
         expect(result).toBe(fnResult);
     });
 });

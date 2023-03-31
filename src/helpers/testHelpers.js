@@ -703,6 +703,38 @@ function writeFile(error, fileName)
 	}
 }
 
+function getAllFilesFromDirectory (dirPath, fileExtension, files_){
+  files_ = files_ || [];
+  const files = fs.readdirSync(dirPath);
+  for (const i in files){
+      const name = dirPath + '/' + files[i];
+      if (fs.statSync(name).isDirectory()){
+          getAllFilesFromDirectory(name, fileExtension, files_);
+      } else {
+        const arrFilePath = name.split("/");
+        const finalFileName = arrFilePath[arrFilePath.length - 1]
+        if (finalFileName.includes(fileExtension)) {
+          files_.push(finalFileName);
+        }
+      }
+  }
+  return files_;
+}
+
+function filterArrayByRegex(array, regex) {
+  if (array.length < 1) {
+    return [];
+  }
+  let testFilesMatch = [];
+  array.map(file => {
+    if (file.match(regex)) {
+      testFilesMatch.push(file)
+    }
+  })
+  return testFilesMatch;
+}
+
+
 module.exports = {
   formatVarsEnv,
   getVariable,
@@ -712,5 +744,7 @@ module.exports = {
   createTable,
   fileExists,
   readingFile,
-  writeFile
+  writeFile,
+  getAllFilesFromDirectory,
+  filterArrayByRegex
 }

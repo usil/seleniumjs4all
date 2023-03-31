@@ -1,5 +1,5 @@
 {
-  "files": [],
+  "filterByTestName": [],
   "virtualUserMultiplier": 1,
   "reportWeb": true,
   "reportMode": "dynamicDeep",
@@ -24,7 +24,7 @@
     {
       "skip": false,
       "identifier": "03test-run",
-      "files": [],
+      "filterByTestName": [],
       "variables": {
         "usil_web": {
           "url": "https://usil.edu.pe",

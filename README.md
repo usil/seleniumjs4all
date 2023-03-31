@@ -39,11 +39,11 @@ Or a web report
 
 ### testOptions.json
 
-You will have a `testOptions.json` file in the root of this project, you should only change the variables inside `virtualUserSuites`. You can also limit the files to test in the `files` arrays setting the name of the tests files that you want to test.
+You will have a `testOptions.json` file in the root of this project, you should only change the variables inside `virtualUserSuites`. You can also limit the files to test in the `filterByTestName` arrays setting the name of the tests files that you want to test.
 
 | name                  | Description                                                                                                                                         | Default Value          | Required |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
-| files                 | The files or directory that you want to test, setting it to an empty array will test all files                                                      | []                     | false    |
+| filterByTestName                 | The files or directory that you want to test, setting it to an empty array will test all files                                                      | []                     | false    |
 | reportWeb             | Generate report on Web(HTML)                                                                                                                        | false                  | true     |
 | reportMode            | Change the type of report keeping its default structure or adjusting the report columns                                                             | staticDeep             | true     |
 | columnNames           | The name of the columns that will be related to the directory structure                                                                             | []                     | true     |
@@ -56,14 +56,14 @@ A `virtualUserSuite` object has the following properties:
 | ---------- | --------------------------------------------------------------------------------- | ----------------------------------------- | -------- |
 | identifier | An identifier for this test suite                                                 | Will default to the position in the array | true     |
 | skip       | The app will skip this test suite                                                 | false                                     | false    |
-| files      | If the length of the array is more than 0 will overwrite the global files options | []                                        | false    |
+| filterByTestName      | If the length of the array is more than 0 will overwrite the global files options | []                                        | false    |
 | variables  | Global variables for all of the test of this suite                                | null                                      | false    |
 
 Example of an empty `testOptions.json` file
 
 ```json
 {
-  "files": [],
+  "filterByTestName": [],
   "virtualUserMultiplier": 1,
   "reportWeb": false,
   "reportMode": "staticDeep",
@@ -72,7 +72,7 @@ Example of an empty `testOptions.json` file
     {
       "skip": false,
       "identifier": "first-test",
-      "files": [],
+      "filterByTestName": [],
       "variables": {
         "acmeBaseUrl": "https://acme.com"
       }
@@ -87,7 +87,7 @@ Example in `testOptions.json` file
 
 ```json
 {
-  "files": [],
+  "filterByTestName": [],
   "virtualUserMultiplier": 1,
   "reportWeb":true,
   "reportMode": "staticDeep",
@@ -108,7 +108,7 @@ Example in `testOptions.json` file
     {
       "skip": false,
       "identifier": "first-test",
-      "files": [],
+      "filterByTestName": [],
       "variables": {
         "acmeBaseUrl": "https://acme.com",
         "acmeApiKey": "${API_KEY}"
@@ -131,7 +131,16 @@ You will have a `browserOptions.json` file in the root of this project. Where yo
 
 ```json
 {
-  "arguments": ["--log-level=1", "--headless", "--no-sandbox", "--disable-gpu"]
+  "options" : {
+    "addArguments": [
+      "--log-level=1",
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--headless",
+      "--window-size=2200,1600"
+    ]
+  }
 }
 ```
 
