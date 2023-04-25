@@ -206,7 +206,8 @@ export SMTP_RECIPIENTS=recipient@server
 
 ## Custom subject on report by mail
 
-This is a framework feature to customize the subject of the emailed report. More information in the next link https://github.com/usil/seleniumjs4all/wiki/Send-report-by-mail#custom-subject-on-report-by-mail
+This is a framework feature to customize the subject of the emailed report. More information in the next link 
+https://github.com/usil/seleniumjs4all/wiki/Custom_subject_on_report_by_mail
 
 <br>
 
