@@ -1,5 +1,5 @@
 {
-  "files": [],
+  "filterByTestName": [],
   "excludeFiles": [],
   "virtualUserMultiplier": 1,
   "reportWeb": true,
@@ -25,7 +25,6 @@
     {
       "skip": false,
       "identifier": "first-run",
-      "files": [],
       "variables": {}
     }
   ]

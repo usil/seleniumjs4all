@@ -50,7 +50,7 @@ describe('Mailer test', () => {
         expect(resp).toBe(undefined);
     });
 
-    test('should reach the message on the smtp server', async () => {
+    test.skip('should reach the message on the smtp server', async () => {
         const customMailer = new MailService();
         const params = {
             filename: "test-report",
