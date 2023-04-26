@@ -220,9 +220,11 @@
 
       data.reportRows.forEach(function (scenarioStat, i) {
 
+        //insert tr to body
         var row = table.insertRow();
         row.id = i;
 
+        //insert td to tr
         let cell0 = row.insertCell(0);
         cell0.className = 'test-result-step-command-cell';
         cell0.innerHTML = i + 1;
@@ -230,6 +232,8 @@
         scenarioStat.columnData.forEach((element, i) => {
           let cell = row.insertCell(i + 1);
           cell.className = 'test-result-step-command-cell';
+          // added tooltip to tds into table
+          cell.title=element;
           cell.innerHTML = element;
         });
 
