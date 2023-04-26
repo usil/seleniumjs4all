@@ -1,7 +1,7 @@
 const { filterArrayByRegex } = require("../../src/helpers/testHelpers");
 
 describe('Filter Array By Regex', () => {
-    test.only('should return empty aray if send empty array', () => {
+    test('should return empty aray if send empty array', () => {
         const resp = filterArrayByRegex([], "");
         expect(resp.length).toBe(0);
     });
