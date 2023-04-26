@@ -565,6 +565,7 @@ const createTable = async (suiteIdentifier, virtualUser, testUuid, rootPath, col
   const colWidths = [];
 
   tableHead.push("#".blue);
+  // width for the first column (index)
   colWidths.push(5);
 
   columnNames.forEach((column, index) => {
@@ -579,6 +580,7 @@ const createTable = async (suiteIdentifier, virtualUser, testUuid, rootPath, col
   });
 
   tableHead.push("Status".blue);
+  // width for the last column (status)
   colWidths.push(15);
 
   const table = new Table({
