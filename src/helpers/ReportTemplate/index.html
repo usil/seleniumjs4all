@@ -111,6 +111,24 @@
       margin: 0 auto;
     }
 
+    .cell-with-comment{
+      position:relative;
+    }
+
+    .cell-comment{
+      display:none;
+      position:fixed; 
+      z-index:100;
+      background-color:white;
+      border: 1px solid;
+      padding:3px;
+      color:black; 
+    }
+
+    .cell-with-comment:hover span.cell-comment{
+      display:block;
+    }
+
     @media (max-width: 989px) {
       .chart-container {
         width: 50%;
@@ -167,14 +185,18 @@
       dataForReport.total = reportDataJSON.numTotalTests;
       dataForReport.date = reportDataJSON.date;
       dataForReport.duration = reportDataJSON.duration;
-
       let reportRows = []
       for (const data of reportDataJSON.columnsData) {
+        let ids = "";
 
         let row = {};
         let columnData = []
 
         data.map((value, index) => {
+          // index for ids
+          if (index === 5) {
+            row.ids = value;
+          }
           if (index === 0)
             row.name = value
 
@@ -229,12 +251,15 @@
         cell0.className = 'test-result-step-command-cell';
         cell0.innerHTML = i + 1;
 
+        let ids = scenarioStat.ids;
         scenarioStat.columnData.forEach((element, i) => {
           let cell = row.insertCell(i + 1);
-          cell.className = 'test-result-step-command-cell';
+          cell.className = 'test-result-step-command-cell cell-with-comment';
           // added tooltip to tds into table
-          cell.title=element;
-          cell.innerHTML = element;
+          // cell.title=element;
+          // cell.title = i === scenarioStat.columnData.length - 1 ? element : ids;
+          
+          cell.innerHTML = element + `<span class="cell-comment">${i === scenarioStat.columnData.length - 1 ? element : ids}</span>`;
         });
 
         let cell4 = row.insertCell(4);
