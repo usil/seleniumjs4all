@@ -118,13 +118,6 @@
     }
 
     .cell-comment{
-      /* display:none;
-      position:fixed; 
-      z-index:100;
-      background-color:white;
-      border: 1px solid;
-      padding:3px;
-      color:black;  */
       position: absolute;
       top: 0;
       transform: translateY(70%) scale(0);
@@ -173,9 +166,13 @@
     <canvas id="myChart"></canvas>
   </div>
 
-
   <br>
+  <div id="failed-test-case-ids" class="failed-test-case-ids">
+  </div>
   <br>
+  <h2>
+    Summary Test Result
+    </h2>
   <table id="table" cellspacing="0">
     <thead>
       <tr>
@@ -238,6 +235,10 @@
     }
 
     function main(data) {
+      if (data.errorsIds.length > 0) {
+        const containerErrorsIds = document.getElementById("failed-test-case-ids");
+        containerErrorsIds.innerHTML = `<h2>Failed test case ids</h2> <span style="color:red;">${data.errorsIds}</span>`
+      }
       data = dataAdapter(data)
 
       var table = document.getElementById("table").getElementsByTagName('tbody')[0];

@@ -346,6 +346,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
   
   const dataToReport = [];
 
+  const errorsIds = [];
   /**
    * Preparar los datos para el reporte web
   */
@@ -419,8 +420,8 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
         } = assertionResult;
 
         // save the titles by rows
-        let lastTitle = handleTestIds(title);
-        assertionsTitles.push(lastTitle)
+        let lastTitleIds = handleTestIds(title);
+        assertionsTitles.push(lastTitleIds)
 
         let error_image_name = getCleanedString(`${ancestorTitles} - ${title}`)
         let error_image_path = 'screenshots';
@@ -434,6 +435,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
             error_log: `${title}\n${failureMessages[0]}`,
             screenshot: error_image_path.replaceAll(' ', '%20')
           })
+          errorsIds.push(lastTitleIds)
         }
       }
       let value = [
@@ -444,7 +446,8 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
             : testResult.status
         ],
         error_log,
-        assertionsTitles.join(",\n")
+        assertionsTitles.join(",\n"),
+        // errorsIds.join(", ")
       ];
       dataToReport.push(value);
     }
@@ -460,6 +463,7 @@ const createReportHTML = async (suiteIdentifier, virtualUser, testOptions, testU
   report_data_json.passed = jestOutput.numPassedTests;
   report_data_json.failed = jestOutput.numFailedTests;
   report_data_json.total = jestOutput.numTotalTests;
+  report_data_json.errorsIds = errorsIds.join(", ");
   report_data_json.date = new Date(jestOutput.startTime).toString()
 
   try {
