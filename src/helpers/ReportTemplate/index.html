@@ -19,9 +19,6 @@
       /* width: 25%; */
 
       max-width: 200px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
     }
 
     .test-result-table {
@@ -36,6 +33,11 @@
 
     .test-result-step-command-cell {
       border-bottom: 1px solid gray;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+      /* white-space: nowrap; */
+      word-wrap: break-word;
     }
 
     .test-result-step-description-cell {
@@ -116,17 +118,30 @@
     }
 
     .cell-comment{
-      display:none;
+      /* display:none;
       position:fixed; 
       z-index:100;
       background-color:white;
       border: 1px solid;
       padding:3px;
-      color:black; 
+      color:black;  */
+      position: absolute;
+      top: 0;
+      transform: translateY(70%) scale(0);
+      transition: transform 0.1s ease-in;
+      transform-origin: left;
+      display: inline;
+      background: white;
+      z-index: 20;
+      border: 1px solid black;
+    }
+
+    .cell-with-comment:hover {
+      overflow: visible;
     }
 
     .cell-with-comment:hover span.cell-comment{
-      display:block;
+      transform: translateY(70%) scale(1);
     }
 
     @media (max-width: 989px) {
@@ -254,7 +269,7 @@
         let ids = scenarioStat.ids;
         scenarioStat.columnData.forEach((element, i) => {
           let cell = row.insertCell(i + 1);
-          cell.className = 'test-result-step-command-cell cell-with-comment';
+          cell.className = `test-result-step-command-cell ${ scenarioStat.columnData.length - 1 != i ? "cell-with-comment" : ""}`;
           // added tooltip to tds into table
           // cell.title=element;
           // cell.title = i === scenarioStat.columnData.length - 1 ? element : ids;
