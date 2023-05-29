@@ -146,8 +146,8 @@
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0-rc.1/Chart.js"></script>
   <script type="text/javascript">
-    var report = #data_report;
-    var columnsName = #columns_name;
+    var report = {"duration":"00:00:26","columnsData":[["google","home page","Input_search_should_exist.read","failed",[{"error_log":"[dfdca452f210] - Debe mostrar el search en el inicio\nTimeoutError: There isn't search input\nWait timed out after 4118ms\n    at /home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/webdriver.js:908:17\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","screenshot":"screenshots/google/home%20page/Input_search_should_exist.read.test.js/google__inicio__dfdca452f210__debe_mostrar_el_search_en_el_inicio.jpg"},{"error_log":"[kkdfdca452f210] - Test - Debe mostrar el search en el inicio\nTimeoutError: There isn't search input\nWait timed out after 4270ms\n    at /home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/webdriver.js:908:17\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","screenshot":"screenshots/google/home%20page/Input_search_should_exist.read.test.js/google__inicio__kkdfdca452f210__test__debe_mostrar_el_search_en_el_inicio.jpg"}],"dfdca452f210,\nkkdfdca452f210"],["google","result page","A_simple_search_should_show_results.read","passed",[],"87c530360d38"],["wikipedia","portal","search_keyword_in_wikipedia_summary_table_and_validate_content","failed",[{"error_log":"search keyword in wikipedia summary table and validate content\nNoSuchElementError: no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\".mw-search-resultswww\"}\n  (Session info: headless chrome=110.0.5481.177)\n    at Object.throwDecodedError (/home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/error.js:524:15)\n    at parseHttpResponse (/home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/http.js:587:13)\n    at Executor.execute (/home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/http.js:515:28)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\n    at Driver.execute (/home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/webdriver.js:742:17)\n    at Object.<anonymous> (/home/usuario/Documentos/work/seleniumjs4all-demo/tests/wikipedia/portal/search_keyword_in_wikipedia_summary_table_and_validate_content.test.js:19:18)","screenshot":"screenshots/wikipedia/portal/search_keyword_in_wikipedia_summary_table_and_validate_content.test.js/wikipedia__portal__search_keyword_in_wikipedia_summary_table_and_validate_content.jpg"}],""],["youtube","menu","Menu_button_should_exist_image","passed",[],"ce6645f584bf"],["youtube","menu","Advanced_options_should_exist.update","failed",[{"error_log":"[20803bcd4ada] - Debe mostrar el contenido del menu \nTimeoutError: There ins't menu button\nWait timed out after 5060ms\n    at /home/usuario/Documentos/work/seleniumjs4all/node_modules/selenium-webdriver/lib/webdriver.js:908:17\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","screenshot":"screenshots/youtube/menu/Advanced_options_should_exist.update.test.js/youtube__init__20803bcd4ada__debe_mostrar_el_contenido_del_menu_.jpg"}],"20803bcd4ada"]],"report_name":"fe55550f-ca30-4335-9873-8014c4b13395","passed":2,"failed":4,"total":6,"errorsIds":"dfdca452f210, kkdfdca452f210, , 20803bcd4ada","date":"Fri May 26 2023 10:24:05 GMT-0500 (hora estándar de Perú)"};
+    var columnsName = ["system","menu","scenario"];
   </script>
 
 </head>
@@ -159,7 +159,7 @@
     <h3 id="reportName">#report_name</h3>
 
       <h4 style="text-align: center" id="date"></h4>
-      <h4 id="reportDuration">#report_duration</h4>
+      <h4 id="reportDuration">00:00:26</h4>
   </div>
 
   <div class="chart-container">

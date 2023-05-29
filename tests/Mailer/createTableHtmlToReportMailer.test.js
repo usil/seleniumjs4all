@@ -21,4 +21,10 @@ describe('Mailer - create table html to report mailer', () => {
         const bodyTableHTML = await mailer.createTableHtmlToReportMailer(resourceReportPath, titleBody)
         expect(bodyTableHTML).toBe("")
     });
+    test('should return html when failed tests', async () => {
+        const resourceReportPath = path.resolve(__dirname, "mocks", "result", "index-failed.html");
+        const titleBody = "custom title failed"
+        const bodyTableHTML = await mailer.createTableHtmlToReportMailer(resourceReportPath, titleBody)
+        expect(bodyTableHTML).toBeTruthy()
+    });
 });
