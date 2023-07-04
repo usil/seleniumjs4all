@@ -20,7 +20,12 @@ const mailer = new Mailer();
 
 
 const rootPath = path.dirname(packPath(("")));
-const testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptions.json"), "utf8");
+let testOptions
+if (process.env.TEST_OPTION_CUSTOM_LOCATION && process.env.TEST_OPTION_CUSTOM_LOCATION != null) {
+  testOptions = envSettings.loadJsonFileSync( process.env.TEST_OPTION_CUSTOM_LOCATION, "utf8");
+} else {
+  testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptions.json"), "utf8");
+}
 const columnNames = testOptions.columnNames;
 const reportMode = testOptions.reportMode;
 const smtpParams = testOptions.smtp;

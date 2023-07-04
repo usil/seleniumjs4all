@@ -39,6 +39,16 @@ Or a web report
 
 ### testOptions.json
 
+***Remember that the "testOptions.json" file is not the only one that selenium4all can take into account, you can specify in your environment variables the path of your custom test options in the variable "TEST_OPTION_CUSTOM_LOCATION"***
+
+```bash
+"on terminal" 
+export TEST_OPTION_CUSTOM_LOCATION=route
+
+"on .env file"
+TEST_OPTION_CUSTOM_LOCATION=route
+```
+
 You will have a `testOptions.json` file in the root of this project, you should only change the variables inside `virtualUserSuites`. You can also limit the files to test in the `filterByTestName` arrays setting the name of the tests files that you want to test.
 
 | name                  | Description                                                                                                                                         | Default Value          | Required |
