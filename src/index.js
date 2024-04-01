@@ -118,11 +118,13 @@ const main = () => {
         // Format variables for environment variables
         let varToEnv = formatVarsEnv(suite.variables)
 
+        varToEnv = {...varToEnv, ...process.env}
+
         /**
          * When not in windows, the path is added
          */
-        if (os.type() !== 'Windows_NT') {
-          varToEnv.PATH = process.env.PATH
+        if (os.type() === 'Windows_NT') {
+          delete varToEnv.PATH
         }
 
         /**

@@ -9,11 +9,13 @@
 ![](./badges/badge-branches.svg) ![](./badges/badge-functions.svg) ![](./badges/badge-lines.svg) ![](./badges/badge-statements.svg)
 
 
-
-
 ## Description
 
-This is a library to contains diferents functions.
+Framework that ncapsulates complexity of browser, driver and selenium configrations. Also adds some useful features like:
+
+- Automatic screenshot on error
+- Shell report
+- Senf html report if smtp is configured
 
 ## Requirements
 
@@ -28,12 +30,9 @@ Or a web report
 
 ![image](https://user-images.githubusercontent.com/3322836/200892976-c2c0ad2c-a5a3-4c33-bb21-23de94e64316.png)
 
-## Steps
+## Demo
 
-```list
-- Create a browserOptions.json
-- Create a testOptions.json
-```
+Clone this repository https://github.com/usil/seleniumjs4all-demo and follow its readme.md
 
 ## Advanced Configurations
 
@@ -215,17 +214,9 @@ https://github.com/usil/seleniumjs4all/wiki/Custom_subject_on_report_by_mail
 
 <table>
   <tbody>
-    <td>
-      <img src="https://avatars.githubusercontent.com/u/66818290?s=400&u=d2f95a7497efd7fa830cf96fc2dc01120f27f3c5&v=4" width="100px;"/>
-      <br />
-      <label><a href="https://github.com/iSkyNavy">Diego Ramos</a></label>
-      <br />
-    </td>
-    <td>
-      <img src="https://avatars0.githubusercontent.com/u/3322836?s=460&v=4" width="100px;"/>
-      <br />
-      <label><a href="http://jrichardsz.github.io/">JRichardsz</a></label>
-      <br />
-    </td>
+    <td align="center"><a href="https://github.com/iSkyNavy"><img src="https://avatars.githubusercontent.com/u/66818290?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Diego Ramos</b></sub></a></td>  
+
+  <td align="center"><a href="http://jrichardsz.github.io"><img src="https://avatars0.githubusercontent.com/u/3322836?s=460&v=4" width="100px;" alt=""/><br /><sub><b>JRichardsz</b></sub></a></td>  
+
   </tbody>
 </table>
