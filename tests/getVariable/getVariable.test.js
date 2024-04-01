@@ -25,7 +25,7 @@ describe('Get Variable', () => {
         expect(resp).toBe(process.env.new_new03)
     });
     test('should return the all values and variables with formatVarsEnv', async () => {
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "combineTestOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "combined_settings.json"), "utf8");
         const varToEnv = formatVarsEnv(testOptions.virtualUserSuites[0].variables);
         for (const key in varToEnv) {
             process.env[key] = varToEnv[key];

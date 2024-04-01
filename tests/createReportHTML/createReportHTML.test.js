@@ -47,25 +47,25 @@ describe('Create report htmljsdom', () => {
     });
 
     test('Should return message if report web is false on testOptions file', async () => {
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "01testOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "01_settings.json"), "utf8");
         const resp = await createReportHTML("zsfs", 515151, testOptions, 5215, rootPath);
         expect(resp).toBe("The report web is not required here")
     });
     test('Should return message if report web is not present on testOptions file', async () => {
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "02testOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "02_settings.json"), "utf8");
         const resp = await createReportHTML("zsfs", 515151, testOptions, 5215, rootPath);
         expect(resp).toBe("The report web is not required here")
     });
     
     test('Should return a message when creating the html report, with just a virtual Suite', async () => {
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03testOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03_settings.json"), "utf8");
         const TEST_UUID = v4();
         const suiteIdentifier = testOptions.virtualUserSuites[0].identifier;
         const resp = await createReportHTML(suiteIdentifier, 0, testOptions, TEST_UUID, path.join(__dirname, "mock"));
         expect(resp).toBe("Created report")
     });
     test('Should return a message when path of jest output is nor correct', async () => {
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03testOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03_settings.json"), "utf8");
         const TEST_UUID = v4();
         const suiteIdentifier = testOptions.virtualUserSuites[0].identifier;
         const resp = await createReportHTML(suiteIdentifier, 0, testOptions, TEST_UUID, path.join(__dirname, "mocksd"));
@@ -73,7 +73,7 @@ describe('Create report htmljsdom', () => {
     });
     test('Should create a report html into path ./report/${identifier}/${virtualUser}, there should be an index.html file', async () => {
         const rootPath = path.dirname(packPath(("")));
-        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03testOptions.json"), "utf8");
+        const testOptions = envSettings.loadJsonFileSync( path.join(__dirname, "mock", "03_settings.json"), "utf8");
         const TEST_UUID = v4();
         const suiteIdentifier = testOptions.virtualUserSuites[0].identifier;
         const resp = await createReportHTML(suiteIdentifier, 0, testOptions, TEST_UUID, path.join(__dirname, "mock"));

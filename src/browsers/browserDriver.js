@@ -9,7 +9,7 @@ const packPath = require("package-json-path");
 
 const rootPath = path.dirname(packPath(("")));
 
-const browserOptions = require(path.join(rootPath, "browserOptions.json"));
+const browserOptions = require(path.join(rootPath, "settings.json")).browserOptions;
 
 const browserDriver = {
   /**
@@ -33,7 +33,7 @@ const browserDriver = {
             chromeOptions = chromeOptions[option](...browserOptions.options[option]);
           }
         } catch (error) {
-          console.log("There are error when you try set chrome options, check your browserOptions.json file");
+          console.log("There are error when you try set chrome options, check your browserOptions in the settings.json file");
           console.log(error)
         }
       })
@@ -76,7 +76,7 @@ const browserDriver = {
             firefoxOptions = firefoxOptions[option](...browserOptions.options[option]);
           }
         } catch (error) {
-          console.log("There are error when you try set chrome options, check your browserOptions.json file");
+          console.log("There are error when you try set chrome options, check your browserOptions in the settings.json file");
           console.log(error)
         }
       })

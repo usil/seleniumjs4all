@@ -21,10 +21,10 @@ const mailer = new Mailer();
 
 const rootPath = path.dirname(packPath(("")));
 let testOptions
-if (process.env.TEST_OPTION_CUSTOM_LOCATION && process.env.TEST_OPTION_CUSTOM_LOCATION != null) {
-  testOptions = envSettings.loadJsonFileSync( process.env.TEST_OPTION_CUSTOM_LOCATION, "utf8");
+if (process.env.SETTINGS_CUSTOM_LOCATION && process.env.SETTINGS_CUSTOM_LOCATION != null) {
+  testOptions = envSettings.loadJsonFileSync( process.env.SETTINGS_CUSTOM_LOCATION, "utf8");
 } else {
-  testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "testOptions.json"), "utf8");
+  testOptions = envSettings.loadJsonFileSync( path.join(rootPath, "settings.json"), "utf8");
 }
 const columnNames = testOptions.columnNames;
 const reportMode = testOptions.reportMode;

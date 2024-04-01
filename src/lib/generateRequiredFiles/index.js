@@ -8,7 +8,7 @@ const { readingFile } = require("../../helpers/testHelpers")
 const rootPath = path.dirname(packPath(("")));
 
 const browserOptionsPath = path.join(rootPath, "browserOptions.json");
-const testOptionsPath = path.join(rootPath, "testOptions.json");
+const testOptionsPath = path.join(rootPath, "settings.json");
 
 console.log('Preparing files...');
 
