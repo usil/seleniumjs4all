@@ -1,19 +1,15 @@
 # seleniumjs4all
 
-<!-- <img src="./badges/badge-branches.svg">
-<img src="./badges/badge-functions.svg">
-<img src="./badges/badge-lines.svg">
-<img src="./badges/badge-statements.svg"> -->
-
-
 ![](./badges/badge-branches.svg) ![](./badges/badge-functions.svg) ![](./badges/badge-lines.svg) ![](./badges/badge-statements.svg)
-
-
 
 
 ## Description
 
-This is a library to contains diferents functions.
+Framework that ncapsulates complexity of browser, driver and selenium configrations. Also adds some useful features like:
+
+- Automatic screenshot on error
+- Shell report
+- Senf html report if smtp is configured
 
 ## Requirements
 
@@ -28,28 +24,17 @@ Or a web report
 
 ![image](https://user-images.githubusercontent.com/3322836/200892976-c2c0ad2c-a5a3-4c33-bb21-23de94e64316.png)
 
-## Steps
+## Demo
 
-```list
-- Create a browserOptions.json
-- Create a testOptions.json
-```
+Clone this repository https://github.com/usil/seleniumjs4all-demo and follow its readme.md
 
 ## Advanced Configurations
 
 ### testOptions.json
 
-***Remember that the "testOptions.json" file is not the only one that selenium4all can take into account, you can specify in your environment variables the path of your custom test options in the variable "TEST_OPTION_CUSTOM_LOCATION"***
+This file can be used to centralize the configurations for your tests, not for the framework. Also you can use secrets with envrionment variables
 
-```bash
-"on terminal" 
-export TEST_OPTION_CUSTOM_LOCATION=route
-
-"on .env file"
-TEST_OPTION_CUSTOM_LOCATION=route
-```
-
-You will have a `testOptions.json` file in the root of this project, you should only change the variables inside `virtualUserSuites`. You can also limit the files to test in the `filterByTestName` arrays setting the name of the tests files that you want to test.
+**Global configurations**
 
 | name                  | Description                                                                                                                                         | Default Value          | Required |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
@@ -60,7 +45,9 @@ You will have a `testOptions.json` file in the root of this project, you should 
 | virtualUserSuites     | The number of whole test suites you want to simulate and its specific configurations and variables, each test virtual user suite represents 1 user. | virtualUserSuite array | true     |
 | virtualUserMultiplier | If you want to execute more users. It multiplies the virtualUserSuites.                                                                             | 1                      | false    |
 
-A `virtualUserSuite` object has the following properties:
+**virtualUserSuite**
+
+
 
 | name       | Description                                                                       | Default Value                             | Required |
 | ---------- | --------------------------------------------------------------------------------- | ----------------------------------------- | -------- |
@@ -133,6 +120,16 @@ Just expose or inject them before the test execution. Linux sample:
 
 ```
 export API_KEY="changeme"
+```
+
+Finally you can specify in your environment variables the path of your custom test options with the variable "TEST_OPTION_CUSTOM_LOCATION"***
+
+```bash
+"on terminal" 
+export TEST_OPTION_CUSTOM_LOCATION=route
+
+"on .env file"
+TEST_OPTION_CUSTOM_LOCATION=route
 ```
 
 ### browserOptions.json
@@ -225,17 +222,9 @@ https://github.com/usil/seleniumjs4all/wiki/Custom_subject_on_report_by_mail
 
 <table>
   <tbody>
-    <td>
-      <img src="https://avatars.githubusercontent.com/u/66818290?s=400&u=d2f95a7497efd7fa830cf96fc2dc01120f27f3c5&v=4" width="100px;"/>
-      <br />
-      <label><a href="https://github.com/iSkyNavy">Diego Ramos</a></label>
-      <br />
-    </td>
-    <td>
-      <img src="https://avatars0.githubusercontent.com/u/3322836?s=460&v=4" width="100px;"/>
-      <br />
-      <label><a href="http://jrichardsz.github.io/">JRichardsz</a></label>
-      <br />
-    </td>
+    <td align="center"><a href="https://github.com/iSkyNavy"><img src="https://avatars.githubusercontent.com/u/66818290?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Diego Ramos</b></sub></a></td>  
+
+  <td align="center"><a href="http://jrichardsz.github.io"><img src="https://avatars0.githubusercontent.com/u/3322836?s=460&v=4" width="100px;" alt=""/><br /><sub><b>JRichardsz</b></sub></a></td>  
+
   </tbody>
 </table>

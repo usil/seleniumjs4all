@@ -1,6 +1,6 @@
 {
   "name": "selenium4all",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "",
   "main": "src/index.js",
   "bin": {
@@ -36,7 +36,7 @@
     "test",
     "jest"
   ],
-  "author": "Diego Ramos",
+  "author": "JRichardsz",
   "license": "ISC",
   "dependencies": {
     "advanced-settings": "git+https://github.com/usil/advanced-settings.git",
