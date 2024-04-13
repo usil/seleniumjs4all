@@ -46,21 +46,21 @@ This file centralize the configurations for all your tests and the framework. Al
 }
 ```
 
-| name                  | Description                                                                                                                                         | Default Value          | Required |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
-| filterByTestName                 | The files or directory that you want to test, setting it to an empty array will test all files                                                      | []                     | false    |
-| filterByRegexTestName                 | Same of filterByTestName but with regex| []                     | false    |
-| reportWeb             | Generate report on Web(HTML)                                                                                                                        | false                  | true     |
-| reportMode            | Change the type of report keeping its default structure or adjusting the report columns                                                             | staticDeep             | true     |
-| columnNames           | The name of the columns that will be related to the directory structure                                                                             | []                     | true     |                                              
-| virtualUserMultiplier | If you want to execute more users. It multiplies the virtualUserSuites.                               | 1                      | false    |
+| name | Description | Default Value | Required |
+|:--|:--|:--|:--|
+| filterByTestName | The files or directory that you want to test, setting it to an empty array will test all files | [] | false |
+| filterByRegexTestName | Same of filterByTestName but with regex| [] | false |
+| reportWeb | Generate report on Web(HTML) | false | true |
+| reportMode | Change the type of report keeping its default structure or adjusting the report columns | staticDeep | true     |
+| columnNames | The name of the columns that will be related to the directory structure | [] | true | 
+| virtualUserMultiplier | If you want to execute more users. It multiplies the virtualUserSuites. | 1 | false |
 
 **browserOptions**
 
-In this section you can pass custom options to the browser that will be used by selenium. Most of those variables should not be touched unless you know what you are doing. The `--headless` option can be removed to not run in it a non headless mode.
+In this section you can pass custom options to the browser that will be used by selenium. Most of those variables should not be touched unless you know what you are doing. The `--headless` option can be removed to not run in it a non headless mode or "see as human" how automation moves your browser
 
 ```json
-{
+"browserSettings": {
   "options" : {
     "addArguments": [
       "--log-level=1",
@@ -73,6 +73,13 @@ In this section you can pass custom options to the browser that will be used by 
   }
 }
 ```
+
+| name | Description | Sample Value | Required |
+|:--|:--|:--|:--|
+| browserSettings.options.addArguments | Wellknown parameters to customize your browser. Simple string array. | [] | false |
+| browserSettings.options.setChromeBinaryPath | Full location of the **Chrome** browser executable (not the driver). | C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe | false |
+| browserSettings.options.setBinary | Full location of the **Chrome** browser executable (not the driver). | C:\\Program Files\\Mozilla Firefox\\firefox.exe | false |
+| browserSettings.webDriverAbsoluteLocation | Full location of the web driver(not the browser). | /opt/driver/geckodriver | false |
 
 If you have problems with the chrome binary or chrome driver location, check:
 

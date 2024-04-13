@@ -12,3 +12,8 @@ jest-output.json
 
 coverage
 /.vscode
+
+.chrome
+.firefox
+.chromiun
+.opera
