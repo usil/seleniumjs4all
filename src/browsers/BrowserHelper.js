@@ -10,27 +10,49 @@ const tar = require("tar-fs");
 const bzip = require("unbzip2-stream");
 
 function BrowserHelper() {
-  var metadata = {
+  this.metadata = {
     chrome: {
       stable: {
         queryVersionUrl:
           "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json",
         jsonPathVersionExtract: "$.channels.Stable.version",
       },
-      downloadUrlTemplate: {
-        linux: {
-          x64: {
-            url: "https://storage.googleapis.com/chrome-for-testing-public/#version/linux64/chrome-linux64.zip",
-            unpackedFolderName: "chrome-linux64",
+      browserBinary : {
+        downloadUrlTemplate: {
+          Linux: {
+            x64: {
+              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/linux64/chrome-linux64.zip",
+              unpackedFolderName: "chrome-linux64",
+              unpackedExecutableName: "chrome",
+            },
           },
-        },
-        win32: {
-          x64: {
-            url: "https://storage.googleapis.com/chrome-for-testing-public/#version/win64/chrome-win64.zip",
-            unpackedFolderName: "chrome-win64",
+          Windows_NT: {
+            x64: {
+              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/win64/chrome-win64.zip",
+              unpackedFolderName: "chrome-win64",
+              unpackedExecutableName: "chrome.exe",
+            },
           },
-        },
+        },        
       },
+      browserDriver : {
+        downloadUrlTemplate: {
+          Linux: {
+            x64: {
+              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/linux64/chromedriver-linux64.zip",
+              unpackedFolderName: "chromedriver-linux64",
+              unpackedExecutableName: "chromedriver",
+            },
+          },
+          Windows_NT: {
+            x64: {
+              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/win32/chromedriver-win64.zip",
+              unpackedFolderName: "chromedriver-win64",
+              unpackedExecutableName: "chromedriver.exe",
+            },
+          },
+        },        
+      }
     },
     firefox: {
       stable: {
@@ -39,13 +61,13 @@ function BrowserHelper() {
         jsonPathVersionExtract: "$.LATEST_FIREFOX_VERSION",
       },
       downloadUrlTemplate: {
-        linux: {
+        Linux: {
           x64: {
             url: "https://ftp.mozilla.org/pub/firefox/releases/#version/linux-x86_64/en-US/firefox-#version.tar.bz2",
             unpackedFolderName: "firefox",
           },
         },
-        win32: {
+        Windows_NT: {
           x64: {
             url: "https://ftp.mozilla.org/pub/firefox/candidates/#version-candidates/build1/win32/en-US/firefox-#version.zip",
             unpackedFolderName: "firefox",
@@ -55,33 +77,39 @@ function BrowserHelper() {
     },
   };
 
-  this.downloadBrowser = async (browser, buildId) => {
-    var platform = os.platform();
-    var arch = process.arch;
-    try {
-      metadata[browser][buildId]["queryVersionUrl"];
-      metadata[browser]["downloadUrlTemplate"][platform][arch];
-    } catch (error) {
-      console.log(error);
-      throw new Error(
-        `Brower info was not found in metadata: platform: ${platform}, browser: ${browser}, buildId: ${buildId}. Allowed values: ${metadata}`
-      );
-    }
-    return await download(platform, arch, browser, buildId);
-  };
-
-  async function download(platform, arch, browser, buildId) {
-    var queryUrl = metadata[browser][buildId]["queryVersionUrl"];
+  this.getVersionByBuildId = async (browser, buildId) => {
+    var queryUrl = this.metadata[browser][buildId]["queryVersionUrl"];
+    var jsonPathVersionExtract = this.metadata[browser][buildId]["jsonPathVersionExtract"]    
     var axiosResponse = await axios.get(queryUrl);
     var version = jp.value(
       axiosResponse.data,
-      metadata[browser][buildId]["jsonPathVersionExtract"]
+      jsonPathVersionExtract
     );
-    console.log(version);
-    var downloadUrl =
-      metadata[browser]["downloadUrlTemplate"][platform][arch]["url"];
-    downloadUrl = downloadUrl.replace(/#version/g, version);
-    console.log("browser to download: " + downloadUrl);
+    return version;
+  }  
+
+  this.downloadBrowserBinary = async (browser, version) => {
+    var platform = os.type();
+    var arch = process.arch;
+    return await downloadFile(platform, arch, browser, version, this.metadata[browser]["browserBinary"]);
+  };
+
+  this.downloadBrowserDriver = async (browser, version) => {
+    var platform = os.type();
+    var arch = process.arch;
+    return await downloadFile(platform, arch, browser, version, this.metadata[browser]["browserDriver"]);
+  };
+
+  async function downloadFile(platform, arch, browser, version, downloadMetadata) {
+    
+    var unpackedFolderName =  downloadMetadata["downloadUrlTemplate"][platform][arch]["unpackedFolderName"];
+    var unpackedExecutableName =  downloadMetadata["downloadUrlTemplate"][platform][arch]["unpackedExecutableName"];
+
+    var downloadUrlTemplate =
+    downloadMetadata["downloadUrlTemplate"][platform][arch]["url"];
+  
+    var downloadUrl = downloadUrlTemplate.replace(/#version/g, version);
+    console.log(`Downloading ${unpackedFolderName} ${version} : ${downloadUrl}`);
 
     var f = finder(__filename);
     var frameworkLocation = path.dirname(f.next().filename);
@@ -103,28 +131,24 @@ function BrowserHelper() {
     );
     var unpackDestination = destinationBrowserFolder;
     await downloadFileFomrUrl(downloadUrl, compressedFileLocation);
-    
-    if(compressedFileLocation.endsWith(".zip")){
-        await extract(compressedFileLocation, { dir: unpackDestination });
-    }else if(compressedFileLocation.endsWith(".tar.bz2")){
-        await extractTar(compressedFileLocation, unpackDestination);
-    }else{
-        throw new Error("Unsupported file compression. Allowed: zip, .tar.bz2");
+
+    if (compressedFileLocation.endsWith(".zip")) {
+      await extract(compressedFileLocation, { dir: unpackDestination });
+    } else if (compressedFileLocation.endsWith(".tar.bz2")) {
+      await extractTar(compressedFileLocation, unpackDestination);
+    } else {
+      throw new Error("Unsupported file compression. Allowed: zip, .tar.bz2");
     }
 
-    var unpackedFolderName =
-      metadata[browser]["downloadUrlTemplate"][platform][arch][
-        "unpackedFolderName"
-      ];
-    var binaryLocation = path.join(
+    var executableLocation = path.join(
       unpackDestination,
       unpackedFolderName,
-      browser + (platform == "win32" ? ".exe" : "")
+      unpackedExecutableName
     );
-    console.log("Extraction complete. Binary location: " + binaryLocation);
+    console.log("Extraction complete. File location: " + executableLocation);
     //delete the downloaded files (zip, etc)
     await fs.promises.rm(compressedFileLocation, { recursive: true });
-    return { binaryLocation };
+    return { executableLocation };
   }
 
   async function downloadFileFomrUrl(url, dest) {
@@ -143,14 +167,12 @@ function BrowserHelper() {
   async function extractTar(tarPath, folderPath) {
     return new Promise((fulfill, reject) => {
       const tarStream = tar.extract(folderPath);
-      tarStream.on('error', reject);
-      tarStream.on('finish', fulfill);
+      tarStream.on("error", reject);
+      tarStream.on("finish", fulfill);
       const readStream = fs.createReadStream(tarPath);
       readStream.pipe(bzip()).pipe(tarStream);
     });
-  }  
+  }
 }
 
 module.exports = BrowserHelper;
-
-console.log(require("os").platform());

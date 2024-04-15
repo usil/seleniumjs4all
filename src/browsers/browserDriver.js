@@ -6,6 +6,7 @@ require("dotenv").config();
 require("chromedriver");
 require("geckodriver");
 const packPath = require("package-json-path");
+const BrowserHelper = require("./BrowserHelper.js");
 
 const rootPath = path.dirname(packPath(("")));
 
@@ -39,23 +40,51 @@ const browserDriver = {
       })
     }
 
+    //default browser with default driver
+    if(!browserSettings.browserDriverCustomLocation && !browserSettings.browserBinaryCustomLocation){      
+      return await new Builder()
+      .forBrowser("chrome")
+      .setChromeOptions(chromeOptions)
+      .build();
+    }
+
+    if(browserSettings.browserBinaryCustomLocation && !browserSettings.browserDriverCustomLocation){
+      throw Error("custom browser binary needs a custom driver but browserDriverCustomLocation is null");
+    }
+      
+
     //download stable version
-    
-
-    var webDriverCustomLocation = process.env.CHROME_DRIVER_LOCATION || browserSettings.webDriverAbsoluteLocation;
-
-    if(typeof webDriverCustomLocation!=='undefined'){
-      var service = new chrome.ServiceBuilder(webDriverCustomLocation);
+    if(browserSettings.browserDriverCustomLocation){
+      if(browserSettings.browserBinaryCustomLocation){ //custom browser with custom driver
+        var service = new chrome.ServiceBuilder(browserSettings.browserDriverCustomLocation);
+        chromeOptions.setChromeBinaryPath(browserSettings.browserBinaryCustomLocation)
+        return await new Builder()
+        .forBrowser("chrome")
+        .setChromeService(service)
+        .setChromeOptions(chromeOptions)
+        .build();  
+      }else{ //default browser with custom driver
+        var service = new chrome.ServiceBuilder(browserSettings.browserDriverCustomLocation);
+        return await new Builder()
+        .forBrowser("chrome")
+        .setChromeService(service)
+        .setChromeOptions(chromeOptions)
+        .build();        
+      }
+    }else{
+      //default mode : 
+      //browser and driver will be downloaded and configured
+      var browserHelper = new BrowserHelper();
+      var version = await browserHelper.getVersionByBuildId("chrome", "stable");
+      var binaryResponse = await browserHelper.downloadBrowserBinary("chrome", version);
+      var driverResponse = await browserHelper.downloadBrowserDriver("chrome", version);   
+      var service = new chrome.ServiceBuilder(driverResponse.executableLocation);
+      chromeOptions.setChromeBinaryPath(binaryResponse.executableLocation)
       return await new Builder()
       .forBrowser("chrome")
       .setChromeService(service)
       .setChromeOptions(chromeOptions)
-      .build();
-    }else{
-      return await new Builder()
-      .forBrowser("chrome")
-      .setChromeOptions(chromeOptions)
-      .build();
+      .build();       
     }
   },
   /**
