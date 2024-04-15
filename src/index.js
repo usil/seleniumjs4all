@@ -68,7 +68,6 @@ const main = () => {
 
         let testFiles = [];
         if (testOptions.filterByTestName || suite.filterByTestName || process.env.FILTERED_FILES) {
-          console.log("\n", "¡Filter by test name active!", "\n")
           const environmentTestFiles = process.env.FILTERED_FILES
             ? process.env.FILTERED_FILES.toString().split(" ")
             : [];
@@ -81,7 +80,6 @@ const main = () => {
                 ? suiteTestFiles
                 : globalTestFiles;
         } else if (testOptions.filterByRegexTestName || suite.filterByRegexTestName || process.env.FILTER_BY_REGEX_TEST_NAME) {
-            console.log("\n", "¡Filter by regex test name active!", "\n")
             const environmentFilterFilesByRegex = process.env.FILTER_BY_REGEX_TEST_NAME
               ? process.env.FILTER_BY_REGEX_TEST_NAME.toString().split(" ")
               : [];
@@ -117,8 +115,8 @@ const main = () => {
               : globalExcludeTestFiles;
 
 
-        console.log(testFiles.join(" "), "- testing files...");
-        console.log(exclueTestFiles.join(" "), "- testing files excludes");
+        console.log("included tests: ", testFiles.join(" "));
+        console.log("excluded tests: ", exclueTestFiles.join(" "));
 
         // Format variables for environment variables
         let varToEnv = formatVarsEnv(suite.variables)

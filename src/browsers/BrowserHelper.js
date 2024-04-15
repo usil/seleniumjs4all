@@ -104,13 +104,6 @@ function BrowserHelper() {
     
     var unpackedFolderName =  downloadMetadata["downloadUrlTemplate"][platform][arch]["unpackedFolderName"];
     var unpackedExecutableName =  downloadMetadata["downloadUrlTemplate"][platform][arch]["unpackedExecutableName"];
-
-    var downloadUrlTemplate =
-    downloadMetadata["downloadUrlTemplate"][platform][arch]["url"];
-  
-    var downloadUrl = downloadUrlTemplate.replace(/#version/g, version);
-    console.log(`Downloading ${unpackedFolderName} ${version} : ${downloadUrl}`);
-
     var f = finder(__filename);
     var frameworkLocation = path.dirname(f.next().filename);
     var destinationBrowserFolder = path.join(
@@ -120,16 +113,30 @@ function BrowserHelper() {
       platform,
       arch
     );
+    var unpackDestination = destinationBrowserFolder;
+    var executableLocation = path.join(
+      unpackDestination,
+      unpackedFolderName,
+      unpackedExecutableName
+    );
 
-    if (!fs.existsSync(destinationBrowserFolder)) {
-      await fs.promises.mkdir(destinationBrowserFolder, { recursive: true });
-    }
+    if (fs.existsSync(executableLocation)) {
+      console.log("Executable already exist: "+executableLocation);
+      //@TODO: force deletion
+      return { executableLocation };
+    }    
+
+    var downloadUrlTemplate =
+    downloadMetadata["downloadUrlTemplate"][platform][arch]["url"];
+  
+    var downloadUrl = downloadUrlTemplate.replace(/#version/g, version);
+    console.log(`Downloading ${unpackedFolderName} ${version} : ${downloadUrl}`);
 
     var compressedFileLocation = path.join(
       destinationBrowserFolder,
       downloadUrl.split("/").pop()
     );
-    var unpackDestination = destinationBrowserFolder;
+    
     await downloadFileFomrUrl(downloadUrl, compressedFileLocation);
 
     if (compressedFileLocation.endsWith(".zip")) {
@@ -140,11 +147,7 @@ function BrowserHelper() {
       throw new Error("Unsupported file compression. Allowed: zip, .tar.bz2");
     }
 
-    var executableLocation = path.join(
-      unpackDestination,
-      unpackedFolderName,
-      unpackedExecutableName
-    );
+
     console.log("Extraction complete. File location: " + executableLocation);
     //delete the downloaded files (zip, etc)
     await fs.promises.rm(compressedFileLocation, { recursive: true });

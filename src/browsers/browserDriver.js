@@ -20,6 +20,10 @@ const browserDriver = {
    */
   chrome: async () => {
 
+    if(typeof browserSettings==='undefined') throw Error("browserSettings in settings.json is required"); 
+
+    console.log("browserSettings", browserSettings)
+
     let chromeOptions = new chrome.Options();
     let optionsKeys;
     if (browserSettings.options) {
@@ -41,7 +45,9 @@ const browserDriver = {
     }
 
     //default browser with default driver
-    if(!browserSettings.browserDriverCustomLocation && !browserSettings.browserBinaryCustomLocation){      
+    if(typeof browserSettings.browserDriverCustomLocation === 'undefined' && 
+    typeof browserSettings.browserBinaryCustomLocation === 'undefined' && browserSettings.useLocalBrowser == "true"){      
+      console.log("Default browser with default driver")
       return await new Builder()
       .forBrowser("chrome")
       .setChromeOptions(chromeOptions)
@@ -49,13 +55,13 @@ const browserDriver = {
     }
 
     if(browserSettings.browserBinaryCustomLocation && !browserSettings.browserDriverCustomLocation){
-      throw Error("custom browser binary needs a custom driver but browserDriverCustomLocation is null");
+      throw Error("Custom browser binary needs a custom driver but browserDriverCustomLocation is null");
     }
       
-
     //download stable version
     if(browserSettings.browserDriverCustomLocation){
       if(browserSettings.browserBinaryCustomLocation){ //custom browser with custom driver
+        console.log("Custom browser with custom driver")
         var service = new chrome.ServiceBuilder(browserSettings.browserDriverCustomLocation);
         chromeOptions.setChromeBinaryPath(browserSettings.browserBinaryCustomLocation)
         return await new Builder()
@@ -64,6 +70,7 @@ const browserDriver = {
         .setChromeOptions(chromeOptions)
         .build();  
       }else{ //default browser with custom driver
+        console.log("Default browser with custom driver")
         var service = new chrome.ServiceBuilder(browserSettings.browserDriverCustomLocation);
         return await new Builder()
         .forBrowser("chrome")
@@ -74,6 +81,7 @@ const browserDriver = {
     }else{
       //default mode : 
       //browser and driver will be downloaded and configured
+      console.log("Browser and driver will be downloaded and configured")
       var browserHelper = new BrowserHelper();
       var version = await browserHelper.getVersionByBuildId("chrome", "stable");
       var binaryResponse = await browserHelper.downloadBrowserBinary("chrome", version);

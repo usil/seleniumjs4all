@@ -76,10 +76,10 @@ In this section you can pass custom options to the browser that will be used by 
 
 | name | Description | Sample Value | Required |
 |:--|:--|:--|:--|
-| browserSettings.options.addArguments | Wellknown parameters to customize your browser. Simple string array. | [] | false |
-| browserSettings.options.setChromeBinaryPath | Full location of the **Chrome** browser executable (not the driver). | C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe | false |
-| browserSettings.options.setBinary | Full location of the **Chrome** browser executable (not the driver). | C:\\Program Files\\Mozilla Firefox\\firefox.exe | false |
-| browserSettings.webDriverAbsoluteLocation | Full location of the web driver(not the browser). | /opt/driver/geckodriver | false |
+| browserSettings.options.addArguments | Wellknown parameters to customize your browser. Full details [here](https://github.com/usil/seleniumjs4all/wiki/BrowserOptions) | [] | false |
+| browserSettings.useLocalBrowser | Will use the default browser in the os and will infer the driver  | true | false |
+| browserSettings.browserBinaryCustomLocation | Full location of the browser (chrome or firefox) executable. | C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe | false |
+| browserSettings.browserDriverCustomLocation | Full location of the driver (chrome or firefox) executable. | /opt/driver/geckodriver | false |
 
 If you have problems with the chrome binary or chrome driver location, check:
 
