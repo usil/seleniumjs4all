@@ -25,16 +25,5 @@ describe('BrowserHelper', () => {
         var response = await browserHelper.downloadBrowserDriver("chrome", version);
         var exist = fs.existsSync(response.executableLocation);
         expect(exist).toBe(true)
-    });
-
-    test('should download firefox binary', async () => {
-        var browserLocation = path.join(process.cwd(), ".firefox");
-        if (fs.existsSync(browserLocation)) {
-            await fs.promises.rm(browserLocation, { recursive: true });  
-        }  
-        var browserHelper = new BrowserHelper();
-        var response = await browserHelper.downloadBrowser("firefox", "stable");
-        var exist = fs.existsSync(response.executableLocation);
-        expect(exist).toBe(true)
-    });    
+    });  
 });

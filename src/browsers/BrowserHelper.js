@@ -4,10 +4,16 @@ const path = require("path");
 const fs = require("fs");
 const finder = require("find-package-json");
 const https = require("https");
+const http = require("http");
 const extract = require("extract-zip");
 const jp = require("jsonpath");
 const tar = require("tar-fs");
 const bzip = require("unbzip2-stream");
+const url = require("url");
+const download = require('download'); 
+const protocols = {
+  http, https
+}
 
 function BrowserHelper() {
   this.metadata = {
@@ -130,12 +136,13 @@ function BrowserHelper() {
     downloadMetadata["downloadUrlTemplate"][platform][arch]["url"];
   
     var downloadUrl = downloadUrlTemplate.replace(/#version/g, version);
-    console.log(`Downloading ${unpackedFolderName} ${version} : ${downloadUrl}`);
-
     var compressedFileLocation = path.join(
       destinationBrowserFolder,
       downloadUrl.split("/").pop()
     );
+
+    console.log(`Downloading ${unpackedFolderName} ${version} : ${downloadUrl}`);
+    console.log(`Destination ${compressedFileLocation}`)
     
     await downloadFileFomrUrl(downloadUrl, compressedFileLocation);
 
@@ -154,17 +161,9 @@ function BrowserHelper() {
     return { executableLocation };
   }
 
-  async function downloadFileFomrUrl(url, dest) {
-    return new Promise((resolve, reject) => {
-      var file = fs.createWriteStream(dest);
-      https.get(url, function (response) {
-        response.pipe(file);
-        file.on("finish", function () {
-          file.close();
-          resolve();
-        });
-      });
-    });
+  async function downloadFileFomrUrl(urlString, dest) {
+    await fs.promises.mkdir(path.dirname(dest), { recursive: true })
+    await download(urlString, path.dirname(dest));
   }
 
   async function extractTar(tarPath, folderPath) {
