@@ -3,17 +3,11 @@ const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 const finder = require("find-package-json");
-const https = require("https");
-const http = require("http");
 const extract = require("extract-zip");
 const jp = require("jsonpath");
 const tar = require("tar-fs");
 const bzip = require("unbzip2-stream");
-const url = require("url");
 const download = require('download'); 
-const protocols = {
-  http, https
-}
 
 function BrowserHelper() {
   this.metadata = {
@@ -52,7 +46,7 @@ function BrowserHelper() {
           },
           Windows_NT: {
             x64: {
-              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/win32/chromedriver-win64.zip",
+              url: "https://storage.googleapis.com/chrome-for-testing-public/#version/win64/chromedriver-win64.zip",
               unpackedFolderName: "chromedriver-win64",
               unpackedExecutableName: "chromedriver.exe",
             },

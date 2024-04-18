@@ -1,6 +1,10 @@
-# seleniumjs4all
+# Selenium4all
 
 ![](./badges/badge-branches.svg) ![](./badges/badge-functions.svg) ![](./badges/badge-lines.svg) ![](./badges/badge-statements.svg)
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wiki/usil/seleniumjs4all/assets/logo-v1.png" width=400>
+</p>
 
 ## Description
 
