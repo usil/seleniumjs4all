@@ -1,6 +1,10 @@
-# seleniumjs4all
+# Selenium4all
 
 ![](./badges/badge-branches.svg) ![](./badges/badge-functions.svg) ![](./badges/badge-lines.svg) ![](./badges/badge-statements.svg)
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/wiki/usil/seleniumjs4all/assets/logo-v1.png" width=400>
+</p>
 
 ## Description
 
@@ -46,21 +50,21 @@ This file centralize the configurations for all your tests and the framework. Al
 }
 ```
 
-| name                  | Description                                                                                                                                         | Default Value          | Required |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
-| filterByTestName                 | The files or directory that you want to test, setting it to an empty array will test all files                                                      | []                     | false    |
-| filterByRegexTestName                 | Same of filterByTestName but with regex| []                     | false    |
-| reportWeb             | Generate report on Web(HTML)                                                                                                                        | false                  | true     |
-| reportMode            | Change the type of report keeping its default structure or adjusting the report columns                                                             | staticDeep             | true     |
-| columnNames           | The name of the columns that will be related to the directory structure                                                                             | []                     | true     |                                              
-| virtualUserMultiplier | If you want to execute more users. It multiplies the virtualUserSuites.                               | 1                      | false    |
+| name | Description | Default Value | Required |
+|:--|:--|:--|:--|
+| filterByTestName | The files or directory that you want to test, setting it to an empty array will test all files | [] | false |
+| filterByRegexTestName | Same of filterByTestName but with regex| [] | false |
+| reportWeb | Generate report on Web(HTML) | false | true |
+| reportMode | Change the type of report keeping its default structure or adjusting the report columns | staticDeep | true     |
+| columnNames | The name of the columns that will be related to the directory structure | [] | true | 
+| virtualUserMultiplier | If you want to execute more users. It multiplies the virtualUserSuites. | 1 | false |
 
 **browserOptions**
 
-In this section you can pass custom options to the browser that will be used by selenium. Most of those variables should not be touched unless you know what you are doing. The `--headless` option can be removed to not run in it a non headless mode.
+In this section you can pass custom options to the browser that will be used by selenium. Most of those variables should not be touched unless you know what you are doing. The `--headless` option can be removed to not run in it a non headless mode or "see as human" how automation moves your browser
 
 ```json
-{
+"browserSettings": {
   "options" : {
     "addArguments": [
       "--log-level=1",
@@ -73,6 +77,13 @@ In this section you can pass custom options to the browser that will be used by 
   }
 }
 ```
+
+| name | Description | Sample Value | Required |
+|:--|:--|:--|:--|
+| browserSettings.options.addArguments | Wellknown parameters to customize your browser. Full details [here](https://github.com/usil/seleniumjs4all/wiki/BrowserOptions) | [] | false |
+| browserSettings.useLocalBrowser | Will use the default browser in the os and will infer the driver  | true | false |
+| browserSettings.browserBinaryCustomLocation | Full location of the browser (chrome or firefox) executable. | C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe | false |
+| browserSettings.browserDriverCustomLocation | Full location of the driver (chrome or firefox) executable. | /opt/driver/geckodriver | false |
 
 If you have problems with the chrome binary or chrome driver location, check:
 

@@ -9,7 +9,7 @@
     "feature",
     "scenario"
   ],
-  "browserOptions": {
+  "browserSettings": {
     "options" : {
       "addArguments": [
         "--log-level=1",
@@ -39,5 +39,5 @@
     "smtpTlsCiphers": "${SMTP_TLS_CIPHERS}",
     "smtpSenderDisplayname": "${SMTP_SENDER_DISPLAYNAME}",
     "smtpRecipients": "${SMTP_RECIPIENTS}"
-  },  
+  }
 }
